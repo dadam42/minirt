@@ -1,27 +1,20 @@
 #include "filert_parser.h"
 #include "test.h"
-#define NTEST 8
-#define T_TEST t_filert_pcolor
-#define TESTED_FUNCTION filert_parse_pcolor
-#define PRINTF	t_filert_pcolor_printf
-#define EQUAL	t_filert_pcolor_equal
+#define NTEST 3
+#define T_TEST t_filert_position
+#define TESTED_FUNCTION filert_parse_position
+#define PRINTF	t_filert_position_printf
+#define EQUAL	t_filert_position_equal
 #include <stdio.h>
 
 int main()
 {
-	char 					*test_str[NTEST] = { "\t0.3 0,0,0", "0.9 0,1,2", "0.7 42,42,42",
-												"0.5 \v42\t, \v42 ,\t42", "0.01 255,255,255"
-												, "1.2 0, 253, 0", "-1 2, 56, 21", "0.1 12, 12, -45"};
-	t_filert_parser_com		expected_ret[NTEST] = {filert_internal, filert_internal, filert_internal, filert_internal
-													,  filert_internal, filert_internal, filert_error, filert_error};
+	char 					*test_str[NTEST] = { "0,0,0", " \t0\v,- .2, 1.5", "0,2,"};
+	t_filert_parser_com		expected_ret[NTEST] = {filert_internal, filert_internal, filert_error};
 	t_filert_parser_com		ret;
 	T_TEST					expected_parsed[NTEST] = {
-										{.color = {0,0,0}, .intensity = 0.3},
-										{.color = {0, 1, 2}, .intensity = 0.9},
-										{.color = {42,42,42}, .intensity = 0.7},
-										{.color = {42,42,42}, .intensity = 0.5},
-										{.color = {255,255,255}, .intensity = 0.01},
-										{.color = {0,253,0}, .intensity = 1.2}
+										{0,0,0},
+										{0, -0.2, 1.5}
 										};
 	T_TEST					parsed;
 	int						cur_test;
@@ -38,7 +31,7 @@ int main()
 	{
 		nret_test++;
 		printf("== TEST #%d ==\n", nret_test);
-		printf("Test to parse \"%s\" as a filert_color.\n", test_str[cur_test]);		
+		printf("Test to parse \"%s\" as a filert_position.\n", test_str[cur_test]);		
 		ret = TESTED_FUNCTION(&test_str[cur_test], &parsed);
 		if (ret == expected_ret[cur_test])
 		{
