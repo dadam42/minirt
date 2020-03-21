@@ -2,7 +2,6 @@
 # define FILERT_PARSER
 # define FILERT_PARSER_IGNORE " \t\v"
 # define FILERT_SEP_STR	","
-# include "gen_parser.h"
 
 typedef enum	e_filert_parser_com
 {
@@ -11,12 +10,6 @@ typedef enum	e_filert_parser_com
 	filert_sphere, filert_cylinder, filert_square,
 	filert_triangle, filert_plan, filert_internal
 }				t_filert_parser_com;
-
-typedef struct	s_filert_parser
-{
-	char *first_collection[FIRST_COLLECTION_COUNT];
-	char **parsing_str;
-}				t_filert_parser;
 
 typedef struct	s_filert_resolution
 {
@@ -47,14 +40,14 @@ typedef struct	s_filert_light
 {
 	t_filert_position	position;
 	t_filert_pcolor		pcolor;
-}				s_filert_light;
+}				t_filert_light;
 
 typedef struct	s_filert_sphere
 {
 	t_filert_position	center;
 	float				diameter;
 	t_filert_color		color;
-}				t_filter_sphere;
+}				t_filert_sphere;
 
 typedef struct	s_filert_cylinder
 {
@@ -125,14 +118,14 @@ t_filert_parser_com	filert_parse_direction(char **str
 												, t_filert_direction *parsed);
 t_filert_parser_com	filert_parse_position(char **str
 												, t_filert_position *parsed);
-t_filert_parser_com	filert_parse_color(char **str
-												, t_filert_color *parsed);
 t_filert_parser_com	filert_parse_pcolor(char **str
 												, t_filert_pcolor *parsed);
-t_filert_parser_com	filert_parse_int(char **str
-												, int	*parsed);
+t_filert_parser_com	filert_parse_color(char **str
+												, t_filert_color *parsed);
 t_filert_parser_com	filert_parse_float(char **str
 												, float	*parsed);
+t_filert_parser_com	filert_parse_int(char **str
+												, int	*parsed);
 t_filert_parser_com	filert_parse_str(char **str
 												, char	*parsed);
 void				filert_parser_ignore(char **str

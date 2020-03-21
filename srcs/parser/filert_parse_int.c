@@ -5,14 +5,14 @@ t_filert_parser_com	filert_parse_int(char **str
 {
 	short	isneg;
 
-	filert_parser_ignore(str, FILERT_STR_IGNORE);
+	filert_parser_ignore(str, FILERT_PARSER_IGNORE);
 	isneg = 0;
-	if (**str = '-')
+	if (**str == '-')
 	{
 		isneg = 1;
 		(*str)++;
 	}
-	filert_parser_ignore(str, FILERT_STR_IGNORE);
+	filert_parser_ignore(str, FILERT_PARSER_IGNORE);
 	*parsed = 0;
 	if (!(**str >= '0' && **str <= '9'))
 		return (filert_error);
