@@ -5,10 +5,11 @@
 
 typedef enum	e_filert_parser_com
 {
-	filert_error, filert_resolution, 
+	filert_resolution, 
 	filert_ambiant_light, filert_camera, filert_light,
 	filert_sphere, filert_cylinder, filert_square,
-	filert_triangle, filert_plan, filert_internal
+	filert_triangle, filert_plane, filert_internal
+	, filert_error
 }				t_filert_parser_com;
 
 typedef struct	s_filert_resolution
@@ -34,7 +35,7 @@ typedef struct	s_filert_pcolor
 	float			intensity;
 }				t_filert_pcolor;
 
-typedef t_filert_color t_filert_ambiant_light;
+typedef t_filert_pcolor t_filert_ambiant_light;
 
 typedef struct	s_filert_light
 {

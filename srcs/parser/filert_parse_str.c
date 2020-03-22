@@ -3,10 +3,22 @@
 t_filert_parser_com	filert_parse_str(char **str
 												, char	*parsed)
 {
+	char	*cur;
+
 	while (**str == *parsed && *parsed)
 	{
 		(*str)++;
 		parsed++;
 	}
-	return (*parsed ? filert_error : filert_internal);
+	if (*parsed)
+		return (filert_error);
+	cur = FILERT_PARSER_IGNORE;
+	while (*cur)
+	{
+		if (**str == *cur)
+			return (filert_internal);
+		else
+			cur++;
+	}
+	return (filert_error);
 }
