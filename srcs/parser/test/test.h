@@ -1,9 +1,9 @@
 #ifndef TEST_H
 # define TEST_H
 # include "filert_parser.h"
-# define FILERT_COM_STR_SUFFIX {"error", "resolution", "ambiant_light"\
+# define FILERT_COM_STR_SUFFIX { "resolution", "ambiant_light"\
 								, "camera", "light", "sphere", "cylinder"\
-								, "square", "triangle", "plan", "internal", "error"}
+								, "square", "triangle", "plane", "internal", "error"}
 
 typedef void (*t_filert_parsed_obj_printf)(t_filert_parsed_obj *);
 typedef int  (*t_filert_parsed_obj_equal)(t_filert_parsed_obj *, t_filert_parsed_obj *);

@@ -111,6 +111,49 @@ int		t_filert_cylinder_equal(t_filert_parsed_obj* l, t_filert_parsed_obj* r)
 	return (0);
 }
 
+void	t_filert_triangle_printf(t_filert_parsed_obj* obj)
+{
+	printf("tr ");
+	t_filert_position_printf(&obj->triangle.vertex[0]);
+	printf(" ");
+	t_filert_position_printf(&obj->triangle.vertex[1]);
+	printf(" ");
+	t_filert_position_printf(&obj->triangle.vertex[2]);
+	printf(" ");
+	t_filert_color_printf(&obj->triangle.color);
+	printf("\n");
+}
+
+int		t_filert_triangle_equal(t_filert_parsed_obj* l, t_filert_parsed_obj* r)
+{
+	if (t_filert_position_equal(&l->triangle.vertex[0], &r->triangle.vertex[0]) &&
+		t_filert_position_equal(&l->triangle.vertex[1], &r->triangle.vertex[1]) &&
+		t_filert_position_equal(&l->triangle.vertex[2], &r->triangle.vertex[2]) &&
+		t_filert_color_equal(&l->triangle.color, &r->triangle.color))
+		return (1);
+	return (0);
+}
+
+void	t_filert_plane_printf(t_filert_parsed_obj* obj)
+{
+	printf("pl ");
+	t_filert_position_printf(&obj->plane.insertion);
+	printf(" ");
+	t_filert_direction_printf(&obj->plane.orth);
+	printf(" ");
+	t_filert_color_printf(&obj->plane.color);
+	printf("\n");
+}
+
+int		t_filert_plane_equal(t_filert_parsed_obj* l, t_filert_parsed_obj* r)
+{
+	if (t_filert_position_equal(&l->plane.insertion, &r->plane.insertion) &&
+		t_filert_direction_equal(&l->plane.orth, &r->plane.orth) &&
+		t_filert_color_equal(&l->plane.color, &r->plane.color))
+		return (1);
+	return (0);
+}
+
 void	t_filert_sphere_printf(t_filert_parsed_obj* obj)
 {
 	printf("sp ");
@@ -128,6 +171,28 @@ int		t_filert_sphere_equal(t_filert_parsed_obj* l, t_filert_parsed_obj* r)
 		return (1);
 	return (0);
 }
+
+void	t_filert_square_printf(t_filert_parsed_obj* obj)
+{
+	printf("sq ");
+	t_filert_position_printf(&obj->square.center);
+	printf(" ");
+	t_filert_direction_printf(&obj->square.orth);
+	printf(" %f ", obj->square.size);
+	t_filert_color_printf(&obj->square.color);
+	printf("\n");
+}
+
+int		t_filert_square_equal(t_filert_parsed_obj* l, t_filert_parsed_obj* r)
+{
+	if (t_filert_position_equal(&l->square.center, &r->square.center) &&
+		t_filert_direction_equal(&l->square.orth, &r->square.orth) &&
+		t_filert_float_equal(&l->square.size, &r->square.size) && 
+		t_filert_color_equal(&l->square.color, &r->square.color))
+		return (1);
+	return (0);
+}
+
 void	t_filert_camera_printf(t_filert_parsed_obj* obj)
 {
 	printf("c ");
@@ -167,7 +232,8 @@ int		t_filert_light_equal(t_filert_parsed_obj* l, t_filert_parsed_obj* r)
 void	t_filert_parse_printf(t_filert_parser_com com, t_filert_parsed_obj *obj)
 {
 	static t_filert_parsed_obj_printf obj_printf[] = {t_filert_resolution_printf, t_filert_ambiant_light_printf, 
-		t_filert_camera_printf, t_filert_light_printf, t_filert_sphere_printf, t_filert_cylinder_printf};
+		t_filert_camera_printf, t_filert_light_printf, t_filert_sphere_printf, t_filert_cylinder_printf,
+		t_filert_square_printf, t_filert_triangle_printf, t_filert_plane_printf};
 	
 	obj_printf[com](obj); 
 }
@@ -175,7 +241,8 @@ void	t_filert_parse_printf(t_filert_parser_com com, t_filert_parsed_obj *obj)
 int		t_filert_parse_equal(t_filert_parser_com com, t_filert_parsed_obj *l, t_filert_parsed_obj *r)
 {
 	static t_filert_parsed_obj_equal obj_equal[] = {t_filert_resolution_equal, t_filert_ambiant_light_equal,
-		t_filert_camera_equal, t_filert_light_equal, t_filert_sphere_equal, t_filert_cylinder_equal};
+		t_filert_camera_equal, t_filert_light_equal, t_filert_sphere_equal, t_filert_cylinder_equal,
+		t_filert_square_equal, t_filert_triangle_equal, t_filert_plane_equal};
 
 	return (obj_equal[com](l, r));
 }
