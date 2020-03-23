@@ -1,4 +1,4 @@
-#include "3d_utils.h"
+#include "utils_3d.h"
 
 void	t_mat3_copy(t_mat3 dst, t_mat3 src)
 {

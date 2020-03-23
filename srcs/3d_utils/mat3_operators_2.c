@@ -1,4 +1,4 @@
-#include "3d_utils.h"
+#include "utils_3d.h"
 
 double	t_mat3_det(t_mat3 a)
 {
@@ -17,21 +17,18 @@ void	t_mat3_inv(t_mat3 a, t_mat3 r)
 	t_vec3	tmp;
 	short	ldx;
 	short	cdx;
-	short	sign;
 
 	ldx = 0;
-	sign = 1;
 	while (ldx < 3)
 	{
 		cdx = 0;
 		while (cdx < 3)
 		{
-			tmp[ldx][cdx] = sign * (a[(ldx + 1) % 3][(cdx + 1) % 3]
-									* a[(ldx + 2) % 3][(cdx + 2) % 3]
-									- a[(ldx + 1) % 3][(cdx + 2) % 3]
-									* a[(ldx + 2) % 3][(cdx + 1) % 3])
+			tmp[ldx][cdx] = a[(ldx + 1) % 3][(cdx + 1) % 3]
+							* a[(ldx + 2) % 3][(cdx + 2) % 3]
+							- a[(ldx + 1) % 3][(cdx + 2) % 3]
+							* a[(ldx + 2) % 3][(cdx + 1) % 3];
 			cdx++;
-			sign *= -1;
 		}
 		ldx++;
 	}

@@ -1,4 +1,4 @@
-#include "3d_utils.h"
+#include "utils_3d.h"
 
 
 void	t_vec3_apply(t_vec3 a, t_real_app app, t_vec3 r)

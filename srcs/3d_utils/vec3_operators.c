@@ -1,4 +1,4 @@
-#include "3d_utils.h"
+#include "utils_3d.h"
 
 void t_vec3_add(t_vec3 a, t_vec3 b, t_vec3 r)
 {
@@ -24,7 +24,7 @@ void	t_vec3_lcomb(double l, t_vec3 a, t_vec3 b, t_vec3 r)
 	}
 }
 
-double	t_vec3_sprod(t_vec3 a, t_vec3 b, t_vec3 r)
+double	t_vec3_sprod(t_vec3 a, t_vec3 b)
 {
 	return (a[0]*b[0] + a[1]*b[1] + a[2]*b[2]);
 }
@@ -32,16 +32,20 @@ double	t_vec3_sprod(t_vec3 a, t_vec3 b, t_vec3 r)
 void	t_vec3_vprod(t_vec3 a, t_vec3 b, t_vec3 r)
 {
 	short cur;
-	short sign;
+	t_vec3	tmp;
 
 	cur = 0;
-	sign = 1;
 	while (cur < 3)
 	{
-		r[cur] = sign * (a[(cur + 1) % 3] * b[(cur + 2) % 3]
-							- a[(cur + 2) % 3] * b[(cur + 1) % 3]);
+		tmp[cur] = (a[(cur + 1) % 3] * b[(cur + 2) % 3]
+					- a[(cur + 2) % 3] * b[(cur + 1) % 3]);
 		cur++;
-		sign *= -1;
+	}
+	cur = 0;
+	while (cur < 3)
+	{
+		r[cur] = tmp[cur];
+		cur++;
 	}
 }
 
