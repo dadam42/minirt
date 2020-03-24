@@ -20,7 +20,7 @@ static void		dump(unsigned char *out, void* in, size_t nbyte)
 static t_bmpfile_com	write_content_wpadding(int fd, short padding
 												, t_bmpfile_info *info)
 {
-	unsigned char	padder[9] = {66,66,66,66,66,66,66,66,66};
+	unsigned char	padder[9] = {0,0,0,0,0,0,0,0,0};
 	int				cur_line;
 
 	cur_line = info->height - 1;
