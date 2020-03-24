@@ -64,7 +64,7 @@ void	t_mat3_smult(double l, t_mat3 a, t_mat3 r)
 		cdx =  0;
 		while (cdx < 3)
 		{
-			r[ldx][cdx] = a[ldx][cdx];
+			r[ldx][cdx] = l * a[ldx][cdx];
 			cdx++;
 		}
 		ldx++;
@@ -95,5 +95,5 @@ void	t_mat3_prod(t_mat3 a, t_mat3 b, t_mat3 r)
 		}
 		ldx++;
 	}
-	t_mat3_copy(r, tmpres)
+	t_mat3_copy(r, tmpres);
 }

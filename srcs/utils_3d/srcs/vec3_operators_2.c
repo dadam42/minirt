@@ -15,7 +15,7 @@ void t_vec3_smult(double l, t_vec3 a, t_vec3 r)
 
 double	t_vec3_sqnorm(t_vec3 a)
 {
-	return (a[0] * a[0] + a[1] * a[1] + a[2] * a[2])
+	return (a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
 }
 
 void	t_vec3_normalize(t_vec3 a)

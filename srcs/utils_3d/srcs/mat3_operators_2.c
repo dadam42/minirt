@@ -3,8 +3,8 @@
 double	t_mat3_det(t_mat3 a)
 {
 	t_vec3 tmp;
-	vec3_vprod(a[1], a[2], tmp);
-	return (vec3_sprod(tmp, a[3]));
+	t_vec3_vprod(a[1], a[2], tmp);
+	return (t_vec3_sprod(tmp, a[3]));
 }
 
 double	t_mat3_trace(t_mat3 a)
@@ -14,7 +14,7 @@ double	t_mat3_trace(t_mat3 a)
 
 void	t_mat3_inv(t_mat3 a, t_mat3 r)
 {
-	t_vec3	tmp;
+	t_mat3	tmp;
 	short	ldx;
 	short	cdx;
 
