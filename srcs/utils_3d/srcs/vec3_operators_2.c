@@ -20,5 +20,5 @@ double	t_vec3_sqnorm(t_vec3 a)
 
 void	t_vec3_normalize(t_vec3 a)
 {
-	t_vec3_smult(sqrt(t_vec3_sqnorm(a)), a, a);
+	t_vec3_smult(1/sqrt(t_vec3_sqnorm(a)), a, a);
 }

@@ -10,6 +10,7 @@ typedef t_vec3		t_mat3_col;
 typedef t_mat3_line t_mat3[3];
 
 void				t_vec3_init_by_plot3(t_plot3 a, t_plot3 b, t_vec3 r);
+void				t_vec3_copy(t_vec3	dst, t_vec3 src);
 void				t_vec3_add(t_vec3 a, t_vec3 b, t_vec3 r);
 void				t_vec3_lcomb(double l, t_vec3 a, t_vec3 b, t_vec3 r);
 double				t_vec3_sprod(t_vec3 a, t_vec3 b);

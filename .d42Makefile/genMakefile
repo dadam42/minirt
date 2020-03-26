@@ -1,3 +1,4 @@
+CC=gcc
 RTARGET_TYPE=$(if $(TARGET_TYPE),$(TARGET_TYPE),exe)
 LIBS_FPATHS=$(foreach lib,$(LIBS:lib%=%),$($(lib)_DIR)/lib$(lib).a)
 LIBS_DIRS=$(foreach lib,$(LIBS:lib%=%),$($(lib)_DIR))
@@ -27,7 +28,7 @@ $(TARGET):$(LIBS:%=%.a) $(SRCS:%.c=%.o)
 	gcc $(CFLAGS) $(SRCS:%.c=%.o)  -o $@ $(LDLIBS)
 else
 $(TARGET): $(LIBS:%=%.a) $(SRCS:%.c=%.o)
-	$(foreach liba, $(filter %.a, $?), ar -x $($(liba:lib%.a=%)_DIR)/$(liba);)
+	$(foreach liba, $(notdir $(filter %.a, $?)), ar -x $($(liba:lib%.a=%)_DIR)/$(liba);)
 	ar -rc $@ *.o
 	ranlib $@
 endif

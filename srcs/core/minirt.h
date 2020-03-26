@@ -1,6 +1,8 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 # include "utils_3d.h"
+# define PI 3.141592653589793
+# define PREC 1e-15
 
 typedef t_vec3	t_minirt_position;
 typedef t_vec3	t_minirt_direction;
@@ -91,7 +93,6 @@ typedef union	u_minirt_geom
 typedef struct	s_minirt_obj
 {
 	t_minirt_geom	geom;
-	t_minirt_more	*more;
 }				t_minirt_obj;
 
 

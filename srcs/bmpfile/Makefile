@@ -3,12 +3,8 @@ TARGET_TYPE=lib#one of : exe, lib, default to exe
 TARGET=libbmpfile.a
 #-- libs definition :
 LIBS=libft libd42_sys#list of libs (prefixed with lib : e.g libfoo) which must be recompiled by this Makefile
-STDLIBS=#list of list which must be include to compile
-#-- definitions for each libfoo from $(LIBS):
-ft_DIR=../libft#mandatory, directory containing both library and its Makefile.
-ft_INC=#optionnal, default to lib_DIR : dirname containing lib's headers files.
+ft_DIR=../ft
 d42_sys_DIR=../endianess
-d42_sys_INC=
 #-- srcs definition :
 SRCS=bmpfile_save.c
 SRCS_DIRS=
