@@ -42,16 +42,57 @@ typedef struct	s_minirt_ray
 	t_minirt_direction	direction;
 }				t_minirt_ray;
 
+typedef struct	s_minirt_light
+{
+	t_minirt_position	position;
+	t_minirt_pcolor		pcolor;
+}				t_minirt_light;
+
 typedef struct	s_minirt_sphere
 {
 	t_minirt_position	center;
 	t_minirt_size		radius;
 }				t_minirt_sphere;
 
-typedef struct	s_minirt_light
+typedef struct	s_minirt_cylinder
+{
+	t_minirt_position	base;
+	t_minirt_direction	axe_dir;
+	t_minirt_size		height;
+	t_minirt_size		radius;
+}				t_minirt_cylinder;
+
+typedef struct	s_minirt_plane
 {
 	t_minirt_position	position;
-	t_minirt_pcolor		pcolor;
-}				t_minirt_light;
+	t_minirt_direction	axe_normal;
+}				t_minirt_plane;
+
+typedef struct	s_minirt_triangle
+{
+	t_minirt_position	vertex[3];
+}				t_minirt_triangle;
+
+typedef	struct	s_minirt_square
+{
+	t_minirt_position	bl_vertex;
+	t_minirt_direction	norm;
+}				t_minirt_square;
+
+typedef union	u_minirt_geom
+{
+	t_minirt_sphere		sphere;
+	t_minirt_cylinder	cylinder;
+	t_minirt_plane		plane;
+	t_minirt_triangle	triangle;
+	t_minirt_square		square;
+}				t_minirt_geom;
+
+typedef struct	s_minirt_obj
+{
+	t_minirt_geom	geom;
+	t_minirt_more	*more;
+}				t_minirt_obj;
+
 
 #endif
