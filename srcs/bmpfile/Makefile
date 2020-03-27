@@ -6,7 +6,7 @@ LIBS=libft libd42_sys#list of libs (prefixed with lib : e.g libfoo) which must b
 ft_DIR=../ft
 d42_sys_DIR=../endianess
 #-- srcs definition :
-SRCS=bmpfile_save.c
+SRCS=bmpfile_open.c bmpfile_save.c bmpfile_utils.c bmpfile_write_headers.c t_bmpfile_init.c t_bmpfile_write.c 
 SRCS_DIRS=
 SRCS_INCS=.#
 #
