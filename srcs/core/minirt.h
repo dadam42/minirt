@@ -1,6 +1,7 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 # include "utils_3d.h"
+# include <stddef.h>
 # define PI 3.141592653589793
 # define PREC 1e-15
 
@@ -90,10 +91,40 @@ typedef union	u_minirt_geom
 	t_minirt_square		square;
 }				t_minirt_geom;
 
-typedef struct	s_minirt_obj
+typedef enum	e_minirt_inter_info 
+{minirt_inter_no = 0, minirt_inter_trans = 1, minirt_inter_tang = 2}
+				t_minirt_inter_info; 
+
+typedef struct s_minirt_obj
+				t_minirt_obj;
+typedef	e_minirt_inter_info	(*t_minirt_get_inter)(t_minirt_obj* 
+												, t_minirt_ray *ray
+												, double *t);
+struct	s_minirt_obj
 {
-	t_minirt_geom	geom;
+	t_minirt_geom		geom;
+	t_minirt_get_inter	get_inter;
 }				t_minirt_obj;
 
+typedef t_list	*t_minirt_obj_collection;
+typedef t_list	*t_minirt_light_collection;
+typedef	t_list	*t_minirt_camera_collection;
+typedef struct	s_minirt_scene
+{
+	t_minirt_obj_collection		obj;
+	size_t						nobj;
+	t_minirt_light_collection	light;
+	size_t						nlight;
+	t_minirt_camera_collection	camera;
+	size_t						ncamera;
+	t_minirt_ambiant_light		ambiant_light;
+}				t_minirt_scene;
+
+typedef	struct	s_minirt
+{
+	t_minirt_scene	scene;
+	int				width;
+	int				height;
+}				t_minirt;
 
 #endif
