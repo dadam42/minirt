@@ -24,12 +24,11 @@ typedef struct	s_minirt_camera
 	double				fov;
 }				t_minirt_camera;
 
-typedef struct	s_minirt_screen
+typedef struct	s_minirt_resolution
 {
-	t_minirt_camera	*camera;
-	int				width;
-	int				height;
-}				t_minirt_screen;
+	int	width;
+	int	height;
+}				s_minirt_resolution;
 
 typedef unsigned char	t_minirt_pixel[3];
 typedef struct	s_minirt_image
