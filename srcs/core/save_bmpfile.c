@@ -34,9 +34,9 @@ t_minirt_com	t_minirt_save_bmpfile(t_minirt_scene *scene
 	cur = 0;
 	while (cur < resolution->width * resolution->height)
 	{
-		bmpimage[3 * cur]		= image[cur][0] * 256 > 255 ? 255 : image[cur][0] * 256;
+		bmpimage[3 * cur + 2]		= image[cur][0] * 256 > 255 ? 255 : image[cur][0] * 256;
 		bmpimage[3 * cur + 1]	= image[cur][1] * 256 > 255 ? 255 : image[cur][1] * 256;
-		bmpimage[3 * cur + 2]	= image[cur][2] * 256 > 255 ? 255 : image[cur][2] * 256;
+		bmpimage[3 * cur]	= image[cur][2] * 256 > 255 ? 255 : image[cur][2] * 256;
 		cur++;
 	}
 	bmpfile.write(&bmpfile, bmpimage, resolution->width * resolution->height);

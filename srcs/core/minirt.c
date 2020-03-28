@@ -61,8 +61,8 @@ void	t_minirt_ray_get_color(t_minirt_ray *ray, t_minirt_scene *scene, t_minirt_c
 	if (int_sphere_ray(scene, ray))
 	{
 		color[0] = 1;
-		color[1] = 1;
-		color[2] = 1;
+		color[1] = 0;
+		color[2] = 0;
 	}
 	else
 	{
