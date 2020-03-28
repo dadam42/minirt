@@ -9,8 +9,8 @@ ft_DIR=../ft#mandatory, directory containing both library and its Makefile.
 utils_3d_DIR=../utils_3d
 bmpfile_DIR=../bmpfile
 #-- srcs definition :
-SRCS=minirt.c
-SRCS_DIRS=
+SRCS=minirt.c pixel_collection.c save_bmpfile.c 
+SRCS_DIRS=.
 SRCS_INCS=.#
 #
 #---- dont change anything after this
