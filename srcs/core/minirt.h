@@ -91,6 +91,8 @@ typedef struct	s_minirt_light
 	t_minirt_pcolor		pcolor;
 }				t_minirt_light;
 
+typedef	t_minirt_pcolor t_minirt_ambiant_light;
+
 typedef struct	s_minirt_sphere
 {
 	t_minirt_position	center;
@@ -131,20 +133,40 @@ typedef union	u_minirt_geom
 	t_minirt_square		square;
 }				t_minirt_geom;
 
-typedef t_minirt_sphere	t_minirt_scene;
+typedef struct s_minirt_object
+				t_minirt_object;
+
+typedef char	(*t_minirt_intersect_ray)(t_minirt_object*, t_minirt_ray*, double*);
+struct	s_minirt_object
+{
+	t_minirt_geom			geom;
+	t_minirt_color			color;
+	t_minirt_intersect_ray	intersect_ray;
+};
+
+typedef struct	s_minirt_scene
+{
+	t_minirt_light	**lights;
+	int				nlights;
+	t_minirt_object	**objects;
+	int				nobjects;
+}				t_minirt_scene;
+
+typedef struct	s_minirt
+{
+	t_minirt_scene	scene;
+	t_minirt_camera	*camera;
+	t_minirt_resolution resolution;
+}				t_minirt;
 
 void	t_minirt_pixel_collection_init(t_minirt_pixel_collection *collection
 									, t_minirt_camera *camera
 									, t_minirt_resolution *resolution
 									, t_minirt_screen_box *box);
 char	t_minirt_pixel_collection_next(t_minirt_pixel_collection *collection);
-t_minirt_com	t_minirt_camera_save_bmpfile(t_minirt_camera *camera
-									, char *filename
-									, t_minirt_scene *scene
-									, t_minirt_resolution *resolution);
-void	t_minirt_camera_get_image(t_minirt_camera *camera
-								, t_minirt_resolution *resolution
+t_minirt_com	t_minirt_camera_save_bmpfile(t_minirt *minirt
+									, char *filename);
+void	t_minirt_camera_get_image(t_minirt *minirt
 								, t_minirt_screen_box *box
-								, t_minirt_image image
-								, t_minirt_scene *scene);
+								, t_minirt_image image);
 #endif
