@@ -60,9 +60,9 @@ void	t_minirt_ray_get_color(t_minirt_ray *ray, t_minirt_scene *scene, t_minirt_c
 {
 	if (int_sphere_ray(scene, ray))
 	{
-		color[0] = 1;
-		color[1] = 0;
-		color[2] = 0;
+		color[minirt_blue] = 1;
+		color[minirt_green] = 1;
+		color[minirt_red] = 1;
 	}
 	else
 	{
@@ -88,8 +88,8 @@ void	t_minirt_camera_get_image(t_minirt_camera *camera
 		t_minirt_ray_init(&cur_ray, camera->position, cur_pixel.position);
 		t_vec3_normalize(cur_ray.direction);
 		t_minirt_ray_get_color(&cur_ray, scene, cur_color);
-		ft_memcpy(image, cur_color, sizeof(t_minirt_color));
-		image++;
+		ft_memcpy(image.minirt, cur_color, sizeof(t_minirt_color));
+		image.minirt++;
 	}
 }
 
@@ -97,12 +97,12 @@ void	t_minirt_camera_get_image(t_minirt_camera *camera
 int main()
 {
 	t_minirt_sphere sphere = {.center = {0,0,3}, .radius = 1};
-	t_minirt_camera camera = {.position = {0,0,0}, .view = {0,0,1}, .right = {0,1,0}, .up ={1,0,0}, .fov = 120};
-	t_minirt_resolution resolution= {.height = 800, .width = 1000};
+	t_minirt_camera camera = {.position = {0,0,0}, .view = {0,0,1}, .right = {0,1,0}, .up ={1,0,0}, .fov = 4};
+	t_minirt_resolution resolution= {.height = 2, .width = 4};
 	t_minirt_com ret;
 	char	filename[] = "display.bmp";
 
-	ret = t_minirt_save_bmpfile(&sphere, filename, &camera, &resolution);
+	ret = t_minirt_camera_save_bmpfile(&camera, filename, &sphere, &resolution);
 	if (ret == minirt_ok)
 		printf("%s successfully created.\n", filename);
 	else

@@ -14,9 +14,15 @@ typedef t_vec3			t_minirt_position;
 typedef t_vec3			t_minirt_direction;
 typedef	t_vec3			t_minirt_translation;
 typedef t_vec3			t_minirt_color;
+typedef unsigned char	t_minirt_rgb_comp;
 typedef double			t_minirt_intensity;
 typedef double			t_minirt_size;
-typedef t_minirt_color	*t_minirt_image;
+
+typedef union u_minirt_image
+{
+	t_minirt_color		*minirt;
+	t_minirt_rgb_comp	*rgb;
+}			t_minirt_image;
 typedef unsigned char	t_minirt_pixel_color[3];
 typedef enum	e_minirt_comp
 {
@@ -132,9 +138,9 @@ void	t_minirt_pixel_collection_init(t_minirt_pixel_collection *collection
 									, t_minirt_resolution *resolution
 									, t_minirt_screen_box *box);
 char	t_minirt_pixel_collection_next(t_minirt_pixel_collection *collection);
-t_minirt_com	t_minirt_save_bmpfile(t_minirt_scene *scene
+t_minirt_com	t_minirt_camera_save_bmpfile(t_minirt_camera *camera
 									, char *filename
-									, t_minirt_camera *camera
+									, t_minirt_scene *scene
 									, t_minirt_resolution *resolution);
 void	t_minirt_camera_get_image(t_minirt_camera *camera
 								, t_minirt_resolution *resolution
