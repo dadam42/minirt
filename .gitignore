@@ -3,3 +3,5 @@
 *.o
 test_*
 *.a
+sbxmlx/
+xsbx/

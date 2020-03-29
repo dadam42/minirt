@@ -62,11 +62,15 @@ void	t_minirt_ray_init(t_minirt_ray *ray, t_minirt_position position, t_minirt_d
 	ft_memcpy(ray->direction, direction, sizeof(t_minirt_direction));
 }
 
-void	t_minirt_ray_get_color(t_minirt_ray *ray, t_minirt_scene *scene, t_minirt_color color)
+void	t_minirt_ray_get_color(t_minirt_ray *ray, t_minirt_scene *scene, t_minirt_pcolor al, t_minirt_color color)
 {
 	double	t;
+	double  lt;
 	int		cur_obj;
+	int		cur_light;
+	t_minirt_pcolor light_influence;
 	t_minirt_object *best;
+	t_minirt_ray	tmpray;
 	
 	best = 0;
 	cur_obj = 0;
@@ -80,6 +84,25 @@ void	t_minirt_ray_get_color(t_minirt_ray *ray, t_minirt_scene *scene, t_minirt_c
 	}
 	if (best)
 	{
+		cur_light = 0;
+		ft_memcpy(light_influence, al, sizeof(t_minirt_pcolor));
+		while (cur_light < scene->nlight)
+		{
+			t_vec3d_lcomb(t, ray->direction, ray->start, tmpray.start);
+			t_vec3d_init_by_plot3(tmpray.start, scene->lights[cur_light]->position, tmpray.direction);
+			cur_obj = 0;
+			lt = 10e15;
+			while (! scene->objs[cur_obj]->intersect_ray(scene->objs[cur_obj], tmpray, &lt))
+			{
+				lt = 10e15;
+				cur_objs++;
+			}
+			if (cur_objs == scene->nobjects)
+			{
+				t_vec3_lcomb(scene->lights[cur_light]->intensity , scene->lights[cur_light]->intensity, )
+			}
+			cur_light++;
+		}
 		color[minirt_blue] = best->color[minirt_blue];
 		color[minirt_red] = best->color[minirt_red];
 		color[minirt_green] = best->color[minirt_green];
