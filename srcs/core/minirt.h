@@ -4,6 +4,7 @@
 # include <stddef.h>
 # define PI 3.141592653589793
 # define PREC 1e-15
+# define SQPREC 1e-6
 
 
 typedef enum			e_minirt_com
@@ -136,12 +137,24 @@ typedef union	u_minirt_geom
 typedef struct s_minirt_object
 				t_minirt_object;
 
-typedef char	(*t_minirt_intersect_ray)(t_minirt_object*, t_minirt_ray*, double*);
+typedef struct	s_minirt_intersection_info
+{
+	t_minirt_object	*object;
+	t_minirt_ray	*ray;
+	union			u_coord
+	{
+		double				time;
+		t_minirt_position	position;
+		t_minirt_size		local[2];
+	}				coord;
+}				t_minirt_intersection_info;
+
+typedef void	(*t_minirt_object_get_intersection_info)(t_minirt_object*, t_minirt_ray*, t_minirt_intersection_info *info);
 struct	s_minirt_object
 {
 	t_minirt_geom			geom;
 	t_minirt_color			color;
-	t_minirt_intersect_ray	intersect_ray;
+	t_minirt_object_get_intersection_info	get_intersection_info;
 };
 
 typedef struct	s_minirt_scene
@@ -157,6 +170,8 @@ typedef struct	s_minirt
 	t_minirt_scene	scene;
 	t_minirt_camera	*camera;
 	t_minirt_resolution resolution;
+	t_minirt_color		background_color;
+	t_minirt_ambiant_light	ambiant_light;
 }				t_minirt;
 
 void	t_minirt_pixel_collection_init(t_minirt_pixel_collection *collection

@@ -15,7 +15,7 @@ void	t_minirt_pixel_collection_init(t_minirt_pixel_collection *collection
 	t_vec3_lcomb((-(double)resolution->height + 1) / 2 + collection->height, collection->dh, camera->view, collection->position);
 	collection->width_min = box->ulc[minirt_width];
 	collection->width = collection->width_min - 1;
-	t_vec3_lcomb((-(double)resolution->width - 1) / 2 + collection->width, collection->dw, collection->position, collection->position);
+	t_vec3_lcomb((-(double)resolution->width + 1) / 2 + collection->width, collection->dw, collection->position, collection->position);
 	t_vec3_lcomb(-resolution->width + 1, collection->dw, collection->dh, collection->dh);
 	collection->height_max = box->brc[minirt_height];
 	collection->width_max = box->brc[minirt_width];
