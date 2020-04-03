@@ -5,3 +5,4 @@ test_*
 *.a
 sbxmlx/
 xsbx/
+tags

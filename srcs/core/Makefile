@@ -10,7 +10,7 @@ bmpfile_DIR=../bmpfile
 utils_3d_DIR=../utils_3d
 ft_INC=#optionnal, default to lib_DIR : dirname containing lib's headers files.
 #-- srcs definition :
-SRCS=camera_save_bmp.c minirt.c pixel_collection.c 
+SRCS=minirt.c minirt_save_bmp.c t_minirt_boxed_pixel_collection.c t_minirt_boxed_pixel_collection_get_film.c t_minirt_camera_get_image.c t_minirt_camera_get_screen.c t_minirt_ray_get_color.c t_minirt_ray_init.c t_minirt_scene_iterators.c t_minirt_screen_get_boxed_pixel_collection.c t_minirt_screen_get_image.c t_minirt_object_get_color.c 
 SRCS_DIRS=
 SRCS_INCS=.#
 #
