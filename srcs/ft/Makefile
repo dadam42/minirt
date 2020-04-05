@@ -12,6 +12,6 @@ SRCS_INCS=.#
 #---- dont change anything after this
 #--------------------------------------------------------------------------------------
 
-GEN_MAKEFILE_PATH=/home/david/42Projects/minirt/.d42Makefile
+GEN_MAKEFILE_PATH=/home/david/42Projects/minirt/project/.d42Makefile
 include $(GEN_MAKEFILE_PATH)/genMakefile
 

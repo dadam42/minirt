@@ -2,11 +2,11 @@
 #include "libft.h"
 #include <math.h>
 
-void	t_minirt_camera_get_screen(t_minirt_camera *camera
-									, t_minirt_resolution *resolution
-									, t_minirt_screen *screen)
+void	t_camera_get_screen(t_camera *camera
+									, t_resolution *resolution
+									, t_screen *screen)
 {
-	ft_memcpy(&screen->resolution, resolution, sizeof(t_minirt_resolution));
+	ft_memcpy(&screen->resolution, resolution, sizeof(t_resolution));
 	t_vec3_add(camera->position, camera->base[view], screen->ulc_position);
 	screen->pixel_size = 2 * tan(camera->fov / 2 * PI / 180 ) / resolution->width;
 	t_vec3_smult(screen->pixel_size, camera->base[right], screen->dw);

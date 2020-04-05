@@ -1,7 +1,7 @@
 #include "minirt.h"
 
-void	t_minirt_scene_get_light_iterator(t_minirt_scene *scene
-									, t_minirt_scene_light_iterator *it)
+void	t_scene_get_light_iterator(t_scene *scene
+									, t_scene_light_iterator *it)
 {
 	it->lights = scene->lights;
 	it->curidx = -1;
@@ -9,8 +9,8 @@ void	t_minirt_scene_get_light_iterator(t_minirt_scene *scene
 	it->cur = (it->maxidx > 0 ? scene->lights[0] : 0);
 }
 
-void	t_minirt_scene_get_object_iterator(t_minirt_scene *scene
-									, t_minirt_scene_object_iterator *it)
+void	t_scene_get_object_iterator(t_scene *scene
+									, t_scene_object_iterator *it)
 {
 	it->objects = scene->objects;
 	it->curidx = -1;
@@ -18,8 +18,8 @@ void	t_minirt_scene_get_object_iterator(t_minirt_scene *scene
 	it->cur = (it->maxidx > 0 ? scene->objects[0] : 0);
 }
 
-bool	t_minirt_scene_object_iterator_next(
-				t_minirt_scene_object_iterator *it)
+bool	t_scene_object_iterator_next(
+				t_scene_object_iterator *it)
 {
 	it->curidx++;
 	if (it->curidx < it->maxidx)
@@ -30,8 +30,8 @@ bool	t_minirt_scene_object_iterator_next(
 	return (false);	
 }
 
-bool	t_minirt_scene_light_iterator_next(
-				t_minirt_scene_light_iterator *it)
+bool	t_scene_light_iterator_next(
+				t_scene_light_iterator *it)
 {
 	it->curidx++;
 	if (it->curidx < it->maxidx)

@@ -3,12 +3,12 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-void	t_minirt_film_legacy_to_rgb(t_minirt_film *film
+void	t_film_legacy_to_rgb(t_film *film
 									, int size)
 {
 		int					cur;
-		t_minirt_comp		comp;
-		t_minirt_intensity	cur_intensity;
+		t_comp		comp;
+		t_intensity	cur_intensity;
 
 		cur = 0;
 		while (cur < size)
@@ -24,47 +24,44 @@ void	t_minirt_film_legacy_to_rgb(t_minirt_film *film
 		}
 }
 
-static t_minirt_com	bmp_writing_loop(t_minirt_camera *camera
-					, t_minirt_scene *scene
-					, t_minirt_image *i
+static t_com	bmp_writing_loop(t_minirt *minirt
+					, t_image *i
 					, t_bmpfile *file)
 {
-	t_minirt_screen		screen;
-	t_minirt_screen_box	box;
-	t_minirt_boxed_pixel_collection	pixel;
+	t_screen		screen;
+	t_screen_box	box;
+	t_boxed_pixel_collection	pixel;
 
-	box.ulc[height] = i->resolution.height - 1;
+	box.ulc[height] = minirt->resolution.height - 1;
 	box.ulc[width] = 0;
-	box.brc[width] = i->resolution.width;
-	t_minirt_camera_get_screen(camera, &i->resolution, &screen);
+	box.brc[width] = minirt->resolution.width;
+	t_camera_get_screen(camera, &minirt->resolution, &screen);
 	while (box.ulc[height] >= 0)
 	{
 		box.brc[height] = box.ulc[height] + 1;
-		t_minirt_screen_get_boxed_pixel_collection(&screen, &box, &pixel);
-		t_minirt_boxed_pixel_collection_get_film(&pixel, scene
+		t_screen_get_boxed_pixel_collection(&screen, &box, &pixel);
+		t_boxed_pixel_collection_get_film(&pixel, minirt
 		, &camera->position, &i->film);
-		t_minirt_film_legacy_to_rgb(&i->film, i->resolution.width);
-		if (file->write(file, i->film.rgb, i->resolution.width) == bmpfile_error)
+		t_film_legacy_to_rgb(&i->film, minirt->resolution.width);
+		if (file->write(file, i->film.rgb, minirt->resolution.width) == bmpfile_error)
 			return (minirt_error);
 		box.ulc[height]--;
 	}
 	return (minirt_ok);
 }
 
-t_minirt_com	t_minirt_save_bmpfile(t_minirt *minirt
+t_com	t_save_bmpfile(t_minirt *minirt
 									, char *filename)
 {
-	t_minirt_image 		image;
+	t_image 		image;
 	t_bmpfile_init_info bmpfile_info;
 	t_bmpfile			bmpfile;
-	t_minirt_com		ret;
+	t_com		ret;
 
 	image.film.legacy = malloc(minirt->resolution.width
-								* sizeof(t_minirt_color));
+								* sizeof(t_color));
 	if (!image.film.legacy)
 		return (minirt_error);
-	image.resolution.width = minirt->resolution.width;
-	image.resolution.height = minirt->resolution.height;
 	bmpfile_info.height = minirt->resolution.height;
 	bmpfile_info.width = minirt->resolution.width;
 	t_bmpfile_init(&bmpfile, &bmpfile_info);
@@ -72,7 +69,7 @@ t_minirt_com	t_minirt_save_bmpfile(t_minirt *minirt
 				== bmpfile_error)
 		ret = bmpfile_error;
 	else
-		ret = bmp_writing_loop(minirt->camera, &minirt->scene, &image, &bmpfile);
+		ret = bmp_writing_loop(minirt, &image, &bmpfile);
 	bmpfile_close(&bmpfile);
 	free(image.film.legacy);
 	return (ret);

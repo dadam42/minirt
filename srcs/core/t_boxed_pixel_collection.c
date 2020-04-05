@@ -1,7 +1,7 @@
 #include "minirt.h"
 
-bool	t_minirt_boxed_pixel_collection_next(
-			t_minirt_boxed_pixel_collection *collection)
+bool	t_boxed_pixel_collection_next(
+			t_boxed_pixel_collection *collection)
 {
 	collection->cur[width]++;
 	if (collection->cur[width] < collection->max[width])

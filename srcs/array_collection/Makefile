@@ -1,15 +1,15 @@
 #-- TARGET definition :
 TARGET_TYPE=lib#one of : exe, lib, default to exe
-TARGET=libutils_3d.a
+TARGET=libarray_collection.a
 #-- libs definition :
 LIBS=libft#list of libs (prefixed with lib : e.g libfoo) which must be recompiled by this Makefile
 STDLIBS=#list of list which must be include to compile
 #-- definitions for each libfoo from $(LIBS):
 ft_DIR=../ft#mandatory, directory containing both library and its Makefile.
-ft_INC=#optionnal, default to lib_DIR : dirname containing lib's headers files.
+foo_INC=#optionnal, default to lib_DIR : dirname containing lib's headers files.
 #-- srcs definition :
-SRCS=mat3_operators_2.c mat3_operators_3.c mat3_operators.c t_vec3_inits.c vec3_applys.c vec3_operators_2.c vec3_operators.c 
-SRCS_DIRS=srcs
+SRCS=t_array_collection_add.c t_array_collection_init.c t_array_collection_init_iterator.c t_array_collection_iterator_moves.c t_array_collection_iterator_deref.c
+SRCS_DIRS=
 SRCS_INCS=.#
 #
 #---- dont change anything after this
