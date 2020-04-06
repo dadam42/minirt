@@ -29,6 +29,7 @@ typedef struct	s_array_collection_iterator
 
 t_array_collection_com	t_array_collection_add(t_array_collection *collection, void *elt);
 void					t_array_collection_init(t_array_collection *collection);
+void					t_array_collection_release(t_array_collection *collection);
 void					t_array_collection_init_fwiterator(
 							t_array_collection *collection
 							, t_array_collection_iterator *it);

@@ -8,7 +8,7 @@ STDLIBS=#list of list which must be include to compile
 ft_DIR=../ft#mandatory, directory containing both library and its Makefile.
 foo_INC=#optionnal, default to lib_DIR : dirname containing lib's headers files.
 #-- srcs definition :
-SRCS=t_array_collection_add.c t_array_collection_init.c t_array_collection_init_iterator.c t_array_collection_iterator_moves.c t_array_collection_iterator_deref.c
+SRCS=t_array_collection_add.c t_array_collection_init.c t_array_collection_init_iterator.c t_array_collection_iterator_deref.c t_array_collection_iterator_moves.c t_array_collection_release.c 
 SRCS_DIRS=
 SRCS_INCS=.#
 #

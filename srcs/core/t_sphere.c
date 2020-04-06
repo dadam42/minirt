@@ -1,16 +1,6 @@
 #include "minirt.h"
 #include "libft.h"
-extern canonical;
-
-void	t_sphere_init(t_sphere *sphere, t_position center, t_size radius, t_color color)
-{
-	ft_memcpy(sphere->center, center, sizeof(t_position));
-	sphere->radius = radius;
-	((t_object*)sphere)->get_intersection_time = t_sphere_get_intersection_time;
-	((t_object*)sphere)->get_normal = t_sphere_get_normal;
-	((t_object*)sphere)->get_local_albedo = t_object_dummy_get_albedo;
-	((t_object*)sphere)->get_local_coord = t_sphere_get_local_coord;
-}
+#include <math.h>
 
 void t_sphere_get_intersection_time(t_object *obj
 									, t_ray *ray, t_time *time)
@@ -33,10 +23,26 @@ void t_sphere_get_intersection_time(t_object *obj
 	{
 		if (it < *time && it > SQPREC)
 			break ;
-		it += delta;
+		it += c_or_delta;
 		if (it < *time && it > SQPREC)
 			break ;
 		return ;
 	}
 	*time = it;
+}
+
+void					t_sphere_get_local_coord
+							(t_object* obj, t_position pos, t_local_coord lcoord)
+{
+	(void)obj;
+	(void)pos;
+	(void)lcoord;
+}
+
+void					t_sphere_get_normal
+							(t_object* obj, t_object_coord ocoord, t_direction dir)
+{
+	(void)obj;
+	(void)ocoord;
+	(void)dir;
 }

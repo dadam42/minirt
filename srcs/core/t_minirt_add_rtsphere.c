@@ -1,6 +1,6 @@
 #include "minirt.h"
 #include <stdlib.h>
-
+#include "libft.h"
 
 void			t_sphere_init_by_filert(t_sphere *sphere
 										, t_filert_sphere *rtsphere)
@@ -15,12 +15,14 @@ t_minirt_com	t_minirt_add_rtsphere(t_minirt *minirt
 	t_sphere *sphere;
 
 	sphere = malloc(sizeof(t_sphere));
-	t_minirt_init_object(minirt, (object*)sphere);
+	t_minirt_init_object(minirt, (t_object*)sphere);
 	if (!sphere)
 		return (minirt_error);
-	ft_memcpy(object->color, color, sizeof(color));
-	t_sphere_init_by_filert((object*)sphere, (t_filert_sphere*)parsed);
-	if (t_scene_add_object((t_object*)sphere) != minirt_ok)
-		return (minirt_error);
-	return (minirt_ok);
+	t_color_from_filert(((t_object*)sphere)->albedo, parsed->sphere.color);
+	t_sphere_init_by_filert(sphere, (t_filert_sphere*)parsed);
+	((t_object*)sphere)->get_intersection_time = t_sphere_get_intersection_time;
+	((t_object*)sphere)->get_albedo = t_object_dummy_get_albedo;
+	((t_object*)sphere)->get_local_coord = t_sphere_get_local_coord;
+	((t_object*)sphere)->get_normal = t_sphere_get_normal;
+	return (t_scene_add_object(&minirt->scene, (t_object*)sphere));
 }
