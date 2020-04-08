@@ -2,7 +2,7 @@
 #include "bmpfile_utils.h"
 #include <unistd.h>
 
-t_bmpfile_com	bmpfile_write_headers(t_bmpfile *bmpfile)
+t_bmpfile_com	t_bmpfile_write_headers(t_bmpfile *bmpfile)
 {
 	if (write(bmpfile->fd, bmpfile->header, 14) != 14
 		|| write(bmpfile->fd, bmpfile->infoheader, 40) != 40)
