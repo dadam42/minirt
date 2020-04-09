@@ -3,42 +3,42 @@
 
 void	t_mat3_apply_vec3(t_mat3 a, t_vec3 v, t_vec3 r)
 {
-	short	cur;
-	short	idx;
-	t_vec3	tmp;
+	unsigned char	ldx;
+	unsigned char	cdx;
+	t_vec3			tmp;
 
-	cur = 0;
-	while (cur < 0)
+	ldx = 0;
+	while (ldx < 3)
 	{
-		idx = 0;
-		tmp[idx] = 0;
-		while (idx < 3)
+		cdx = 0;
+		tmp[ldx] = 0;
+		while (cdx < 3)
 		{
-			tmp[idx] += v[idx] * a[idx][cur]; 
-			idx++;
+			tmp[ldx] += v[cdx] * a[ldx][cdx];
+			cdx++;
 		}
-		cur++;
+		ldx++;
 	}
-	ft_memcpy(r, tmp, 3 * sizeof(double));
+	ft_memcpy(r, tmp, sizeof(t_vec3));
 }
 
 void	t_mat3_dapply_vec3(t_vec3 tv, t_mat3 a, t_vec3 r)
 {
-	short	cur;
-	short	idx;
-	t_vec3	tmp;
+	unsigned char	ldx;
+	unsigned char	cdx;
+	t_vec3			tmp;
 
-	cur = 0;
-	while (cur < 0)
+	cdx = 0;
+	while (cdx < 3)
 	{
-		idx = 0;
-		tmp[idx] = 0;
-		while (idx < 3)
+		ldx = 0;
+		tmp[cdx] = 0;
+		while (ldx < 3)
 		{
-			tmp[idx] += tv[idx] * a[cur][idx];
-			idx++;
+			tmp[cdx] += tv[ldx] * a[ldx][cdx];
+			ldx++;
 		}
-		cur++;
+		cdx++;
 	}
-	ft_memcpy(r, tmp, 3 * sizeof(double));
+	ft_memcpy(r, tmp, sizeof(t_vec3));
 }

@@ -10,6 +10,6 @@ t_minirt_com	t_minirt_add_rtlight(t_minirt *minirt
 	if (!light)
 		return (minirt_mem_error);
 	vec3_from_filert(light->position, parsed->light.position);
-	t_pcolor_from_filert(&light->pcolor, &parsed->light.pcolor);
+	t_pcolor_from_filert(&light->color, &parsed->light.pcolor);
 	return (t_scene_add_light(&minirt->scene, light));	
 }

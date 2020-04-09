@@ -1,0 +1,10 @@
+
+(discord:17575): Gtk-WARNING **: 12:51:59.990: Theme parsing error: gtk.css:68:35: The style property GtkButton:child-displacement-x is deprecated and shouldn't be used anymore. It will be removed in a future version
+
+(discord:17575): Gtk-WARNING **: 12:51:59.991: Theme parsing error: gtk.css:69:35: The style property GtkButton:child-displacement-y is deprecated and shouldn't be used anymore. It will be removed in a future version
+
+(discord:17575): Gtk-WARNING **: 12:51:59.991: Theme parsing error: gtk.css:73:46: The style property GtkScrolledWindow:scrollbars-within-bevel is deprecated and shouldn't be used anymore. It will be removed in a future version
+[17603:0409/125202.376573:ERROR:buffer_manager.cc(488)] [.DisplayCompositor]GL ERROR :GL_INVALID_OPERATION : glBufferData: <- error from previous GL command
+[17603:0409/125203.755268:ERROR:buffer_manager.cc(488)] [.DisplayCompositor]GL ERROR :GL_INVALID_OPERATION : glBufferData: <- error from previous GL command
+(electron) 'isAccessibilitySupportEnabled function' is deprecated and will be removed. Please use 'accessibilitySupportEnabled property' instead.
+(electron) 'setBadgeCount function' is deprecated and will be removed. Please use 'badgeCount property' instead.

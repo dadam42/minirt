@@ -2,8 +2,8 @@
 #include "libft.h"
 #include <math.h>
 
-void t_sphere_get_intersection_time(t_object *obj
-									, t_ray *ray, t_time *time)
+void t_sphere_set_intersection(t_object *obj
+									, t_ray *ray, t_intersection *inter)
 {
 	t_vec3	tmp;
 	double	it;
@@ -21,28 +21,31 @@ void t_sphere_get_intersection_time(t_object *obj
 	it = (-b - c_or_delta) / 2;
 	while (1)
 	{
-		if (it < *time && it > SQPREC)
+		if (it < inter->time && it > SQPREC)
 			break ;
 		it += c_or_delta;
-		if (it < *time && it > SQPREC)
+		if (it < inter->time && it > SQPREC)
 			break ;
 		return ;
 	}
-	*time = it;
+	inter->time = it;
+	inter->object = obj;
 }
 
-void					t_sphere_get_local_coord
-							(t_object* obj, t_position pos, t_local_coord lcoord)
+void					t_sphere_get_coord
+							(t_object* obj, t_position pos, t_object_coord *coords)
 {
-	(void)obj;
-	(void)pos;
-	(void)lcoord;
+	t_position lpos;
+
+	t_vec3_init_by_plot3(((t_sphere*)obj)->center, pos, lpos);
+	t_mat3_dapply_vec3(lpos, obj->base, coords->cartesian);
+	coords->local[0] = acos(coords->cartesian[2] / ((t_sphere*)obj)->radius);
+	coords->local[1] = atan2(coords->cartesian[1], coords->cartesian[0]);
 }
 
 void					t_sphere_get_normal
-							(t_object* obj, t_object_coord ocoord, t_direction dir)
+							(t_object* obj, t_object_coord *coords, t_direction dir)
 {
-	(void)obj;
-	(void)ocoord;
-	(void)dir;
+	t_vec3_smult(1 / ((t_sphere*)obj)->radius, coords->cartesian, dir);
+	t_mat3_apply_vec3(obj->base, dir, dir);
 }

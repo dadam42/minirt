@@ -31,14 +31,16 @@ double	t_vec3_sprod(t_vec3 a, t_vec3 b)
 
 void	t_vec3_vprod(t_vec3 a, t_vec3 b, t_vec3 r)
 {
-	short cur;
+	int		cur;
 	t_vec3	tmp;
 
 	cur = 0;
 	while (cur < 3)
 	{
-		tmp[cur] = (a[(cur + 1) % 3] * b[(cur + 2) % 3]
-					- a[(cur + 2) % 3] * b[(cur + 1) % 3]);
+		tmp[cur] = a[(cur + 1) % 3] 
+					* b[(cur + 2) % 3]
+					- a[(cur + 2) % 3]
+					* b[(cur + 1) % 3];
 		cur++;
 	}
 	cur = 0;

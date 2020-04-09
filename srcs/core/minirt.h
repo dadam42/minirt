@@ -49,12 +49,6 @@ typedef	struct			s_observer
 	t_resolution	resolution;
 }						t_observer;
 
-typedef struct			s_pcolor
-{
-	t_color		color;
-	t_intensity	intensity;
-}						t_pcolor;
-
 /*
 **	t_film can be
 **		- 'legacy'	(t_color array) 
@@ -200,7 +194,7 @@ t_size					t_ray_init(
 							, t_position	target);
 void					t_ray_get_color(
 							t_ray		*ray
-							, t_scene	*scene
+							, t_minirt	*minirt
 							, t_color	color);
 /*(?) t_color_ray : Never used, to remove (?)*/
 typedef struct			s_color_ray
@@ -212,13 +206,13 @@ typedef struct			s_color_ray
 typedef struct			s_light
 {
 	t_position	position;
-	t_pcolor	pcolor;
+	t_color		color;
 }						t_light;
 
-typedef	t_pcolor 		t_ambiant_light;
+typedef	t_color 		t_ambiant_light;
 
-typedef struct s_intersection_info
-						t_intersection_info;
+typedef struct s_intersection
+						t_intersection;
 
 /*
 **	t_object : structural specification of all visible objects.
@@ -229,30 +223,32 @@ typedef struct s_object
 						t_object;
 typedef struct s_object_coord
 						t_object_coord;
-
-/*		Catalog of pointers, 
+/*
+**		Catalog of pointers, 
 **		_each_ one of these must be defined by 
 **		any new object realisation
 */
 
-typedef void			(*t_object_get_intersection_time)
-							(t_object*, t_ray*, t_time*);
+typedef void			(*t_object_set_intersection)
+							(t_object*, t_ray*, t_intersection*);
 typedef void			(*t_object_get_albedo)
 							(t_object*, t_object_coord*, t_albedo);
-typedef void			(*t_object_get_local_coord)
-							(t_object*, t_position, t_local_coord);
+typedef void			(*t_object_get_coord)
+							(t_object*, t_position, t_object_coord*);
 typedef void			(*t_object_get_normal)
-							(t_object*, t_object_coord, t_direction);
+							(t_object*, t_object_coord*, t_direction);
 struct					s_object
 {
-	t_base							base;
-	t_color							albedo;
-	t_object_get_intersection_time	get_intersection_time;
-	t_object_get_local_coord		get_local_coord;
-	t_object_get_normal				get_normal;
-	t_object_get_albedo				get_albedo;
+	t_base						base;
+	t_color						albedo;
+	t_object_set_intersection	set_intersection;
+	t_object_get_coord			get_coord;
+	t_object_get_normal			get_normal;
+	t_object_get_albedo			get_albedo;
 };
 
+void					t_object_preset_intersection(t_object *object
+								, t_intersection *inter);
 /*
 **	Fall over get_albedo
 */
@@ -263,12 +259,12 @@ void					t_object_dummy_get_albedo
 
 /*
 **	The following realisations of the above t_object type can use a couple of
-**	coordonates system to localize a point on its surface : 
-**		cartesian 	: 	a t_vec3 aka t_position in the global coordonates 
+**	coordinates system to localize a point on its surface : 
+**		cartesian 	: 	a t_vec3 aka t_position in the global coordinates 
 **						system which will be provided by the t_minirt struct 
 **						(see canonical member)
 **		local		:	a t_float[2] aka t_local_coord which will be computed,
-**						if needed it can be of various coordonates system,
+**						if needed it can be of various coordinates system,
 **						typically spherical for a sphere,
 **						barycentric for a triangle,
 **						cylindrical for cylinders...
@@ -291,39 +287,37 @@ typedef struct			s_sphere
 	t_size		radius;
 }						t_sphere;
 
-void 					t_sphere_get_intersection_time(t_object *obj
-							, t_ray *ray, t_time *time);
+void 					t_sphere_set_intersection(t_object *obj
+							, t_ray *ray, t_intersection *intersection);
+void 					t_sphere_set_intersection_alt(t_object *obj
+							, t_ray *ray, t_intersection *intersection);
 void					*t_sphere_get_albedo(t_object*
 							, t_object_coord *coord, t_albedo);
-void					t_sphere_get_local_coord
-							(t_object*, t_position, t_local_coord);
+void					t_sphere_get_coord
+							(t_object*, t_position, t_object_coord*);
 void					t_sphere_get_normal
-							(t_object*, t_object_coord, t_direction);
+							(t_object*, t_object_coord*, t_direction);
 /*
-**	t_intersection_info : 	heart of ray tracing algorithm.
-**							it gather and cache any data required for
-**							the ray tracing algorithm.
-**							when used, its datas must be accessed through
-**							getters unless you know what you do _really_ well.
+**	t_intersection : 	heart of ray tracing algorithm's datas.
+**						it gather and cache any data required for
+**						the ray tracing algorithm.
 */
 
-/*typedef void			(*t_intersection_info_get_position)
-							(t_intersection_info *, t_position *position);
-typedef void			(*t_intersection_info_get_local_coord)
-							(t_intersection_info *, t_local_coord *local);
-typedef void			(*t_intersection_info_get_normal)
-							(*t_intersection_info *, t_direction *normal);*/
-struct					s_intersection_info
+struct					s_intersection
 {
-	t_object							*object;
-	t_ray								*ray;
-	t_direction							normal;
-	t_object_coord						object_coord;
-	t_time								time;
-	int	get_position;
-	int	get_local_coord;
-	int		get_normal;
+	t_object		*object;
+	t_ray			*ray;
+	t_time			time;
+	t_position		position;
+	t_object_coord	coords;
+	t_direction		normal;
+	t_albedo		albedo;
+	t_color			light_influence;
 };
+
+void					t_intersection_init(t_intersection *inter
+							, t_scene *scene, t_ray *ray);
+void					t_intersection_complete(t_intersection *inter);
 
 /*
 **	t_scene and iterators : basically gathering visual objects and lights
@@ -333,19 +327,40 @@ struct					s_intersection_info
 
 typedef struct			s_scene
 {
-	t_array_collection	lights_collection;
-	t_array_collection	objects_collection;
-	t_array_collection	cameras_collection;
-	t_color			background_color;
-	t_ambiant_light	ambiant_light;
+	t_array_collection	light_collection;
+	t_array_collection	object_collection;
+	t_array_collection	camera_collection;
+	t_color				*background_color;
+	t_color				*black;
+	t_ambiant_light		ambiant_light;
 }						t_scene;
 
-typedef t_array_collection_iterator
-						t_scene_light_iterator;
-typedef t_array_collection_iterator
+typedef struct s_scene_object_iterator
 						t_scene_object_iterator;
-typedef t_array_collection_iterator
+struct					s_scene_object_iterator
+{
+	t_array_collection_iterator 	iterator;
+	bool							(*next)(t_scene_object_iterator*);
+	t_object						*(*deref)(t_scene_object_iterator*);
+};
+
+typedef struct s_scene_light_iterator
+						t_scene_light_iterator;
+struct					s_scene_light_iterator
+{
+	t_array_collection_iterator 	iterator;
+	bool							(*next)(t_scene_light_iterator*);
+	t_light							*(*deref)(t_scene_light_iterator*);
+};
+
+typedef struct s_scene_camera_iterator
 						t_scene_camera_iterator;
+struct					s_scene_camera_iterator
+{
+	t_array_collection_iterator 	iterator;
+	bool							(*next)(t_scene_camera_iterator*);
+	t_camera						*(*deref)(t_scene_camera_iterator*);
+};
 
 void					t_scene_get_object_iterator(
 							t_scene						*scene
@@ -353,10 +368,11 @@ void					t_scene_get_object_iterator(
 void					t_scene_get_light_iterator(
 							t_scene						*scene
 							, t_scene_light_iterator	*it);
-bool					t_scene_object_iterator_next(
-							t_scene_object_iterator *it);
-bool					t_scene_light_iterator_next(
-							t_scene_light_iterator *it);
+void					t_scene_get_camera_iterator(
+							t_scene						*scene
+							, t_scene_camera_iterator	*it);
+void					t_scene_get_light_influence(t_scene *scene
+							, t_intersection *inter);
 void					t_scene_init(t_scene* scene);
 void					t_scene_release(t_scene* scene);
 /*
@@ -367,8 +383,9 @@ typedef struct			s_minirt
 	t_scene			scene;
 	t_camera		*camera;
 	t_resolution	resolution;
-	t_base			canonical;
-	t_direction		default_direction;
+	t_base			*canonical;
+	t_direction		*default_direction;
+	t_color			*background_color;
 	int				max_bounce;
 }						t_minirt;
 
@@ -378,15 +395,6 @@ void					t_minirt_release(t_minirt* minirt);
 t_minirt_com			t_save_bmpfile(
 							t_minirt	*minirt
 							, char		*filename);
-void					t_intersection_info_get_color(
-							t_intersection_info	*info
-							, t_scene			*scene
-							, t_color			color);
-void					t_ray_trace(
-							t_ray		*ray
-							, t_scene	*scene
-							, int		nbounce
-							, t_color	color);
 /*
 ** t_scene's functions
 */
@@ -444,7 +452,7 @@ void					t_color_from_filert(
 							t_color		color
 							, t_filert_color	rtcolor);
 void					t_pcolor_from_filert(
-							t_pcolor		*pcolor
+							t_color		*color
 							, t_filert_pcolor	*rtpcolor);
 void					t_direction_from_filert(
 							t_direction	dir

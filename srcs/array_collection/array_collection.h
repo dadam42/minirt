@@ -40,4 +40,6 @@ bool					t_array_collection_iterator_move_fw(
 							t_array_collection_iterator *it);
 bool					t_array_collection_iterator_move_bw(
 							t_array_collection_iterator *it);
+void					*array_collection_iterator_deref
+							(t_array_collection_iterator *it);
 #endif

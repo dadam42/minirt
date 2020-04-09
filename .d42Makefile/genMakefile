@@ -1,4 +1,4 @@
-CC=gcc
+CC?=gcc
 RTARGET_TYPE=$(if $(TARGET_TYPE),$(TARGET_TYPE),exe)
 LIBS_FPATHS=$(foreach lib,$(LIBS:lib%=%),$($(lib)_DIR)/lib$(lib).a)
 LIBS_DIRS=$(foreach lib,$(LIBS:lib%=%),$($(lib)_DIR))
