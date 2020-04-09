@@ -16,12 +16,11 @@ t_bmpfile_com	t_bmpfile_write_with_headers(t_bmpfile *bmpfile
 static t_bmpfile_com	write_line(t_bmpfile *bmpfile
 						, unsigned char **content, int *len)
 {
-	char	padder[3];
 	int		nout;
 
 	nout = bmpfile->info.width - bmpfile->wcur;
 	if ((write(bmpfile->fd, *content, nout * BPP) != nout * BPP)
-		|| (write(bmpfile->fd, padder, bmpfile->padding)
+		|| (write(bmpfile->fd, bmpfile->padder, bmpfile->padding)
 			!= bmpfile->padding))
 		return (bmpfile_error);
 	*content += BPP * (bmpfile->info.width - bmpfile->wcur);
@@ -42,7 +41,7 @@ t_bmpfile_com	t_bmpfile_write_no_header(t_bmpfile *bmpfile
 		{
 			if (len > 0)
 			{
-				if (write(bmpfile->fd, content, len * BPP) != len* BPP)
+				if (write(bmpfile->fd, content, len * BPP) != len * BPP)
 					return (bmpfile_error);
 				bmpfile->wcur += len;
 			}

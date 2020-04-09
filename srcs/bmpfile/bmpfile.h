@@ -32,6 +32,7 @@ struct			s_bmpfile
 	short					bpp;
 	int						fd;
 	short					padding;
+	unsigned char			padder[3];
 	t_bmpfile_header		header;
 	t_bmpfile_infoheader	infoheader;
 	t_bmpfile_write			write;
