@@ -25,9 +25,9 @@ void	t_sphere_set_intersection_alt(t_object *obj
 		}
 	while (1)
 	{
-		if (((time = sn - delta) > SQPREC) && time < inter->time)
+		if (((time = sn - delta) > SQPREC) && time < inter->time - PREC)
 			break;
-		if ((time += 2 * delta) > SQPREC && time < inter->time)
+		if ((time += 2 * delta) > SQPREC && time < inter->time - PREC)
 			break;
 		return;
 	}

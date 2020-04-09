@@ -8,7 +8,7 @@ void	t_ray_get_color(
 {
 	t_intersection	inter;
 	
-	t_intersection_init(&inter, &minirt->scene, ray);	
+	t_intersection_init(&inter, &minirt->scene, ray, FOREVER);	
 	if (inter.object)
 	{
 		t_intersection_complete(&inter);

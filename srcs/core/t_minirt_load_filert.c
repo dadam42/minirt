@@ -19,7 +19,7 @@ static t_minirt_com	t_minirt_add_rtobject(t_minirt *minirt, t_filert_parser_com 
 }
 
 
-t_minirt_com		t_minirt_load_filert(t_minirt *minirt, char *filename)
+t_minirt_com		t_minirt_load_rtfile(t_minirt *minirt, char *filename)
 {
 	char				*line;
 	int					fd;

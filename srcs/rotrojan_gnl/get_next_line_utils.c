@@ -11,17 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t		ft_strlen(char const *s)
-{
-	size_t		size;
-
-	size = 0;
-	while (*(s + size))
-		size++;
-	return (size);
-}
-
+#include "libft.h"
 char		*ft_strchr(char const *s, int c)
 {
 	while (*s)

@@ -236,7 +236,7 @@ typedef void			(*t_object_get_albedo)
 typedef void			(*t_object_get_coord)
 							(t_object*, t_position, t_object_coord*);
 typedef void			(*t_object_get_normal)
-							(t_object*, t_object_coord*, t_direction);
+							(t_object*, t_object_coord*, t_vec3);
 struct					s_object
 {
 	t_base						base;
@@ -296,7 +296,7 @@ void					*t_sphere_get_albedo(t_object*
 void					t_sphere_get_coord
 							(t_object*, t_position, t_object_coord*);
 void					t_sphere_get_normal
-							(t_object*, t_object_coord*, t_direction);
+							(t_object*, t_object_coord *coord, t_vec3 dir);
 /*
 **	t_intersection : 	heart of ray tracing algorithm's datas.
 **						it gather and cache any data required for
@@ -313,10 +313,11 @@ struct					s_intersection
 	t_direction		normal;
 	t_albedo		albedo;
 	t_color			light_influence;
+	t_float			ray_dot_normal;
 };
 
 void					t_intersection_init(t_intersection *inter
-							, t_scene *scene, t_ray *ray);
+							, t_scene *scene, t_ray *ray, t_time time);
 void					t_intersection_complete(t_intersection *inter);
 
 /*
@@ -416,7 +417,7 @@ void					t_minirt_init_object(t_minirt *minirt
 
 typedef t_minirt_com (*t_minirt_rtobject_adder)(t_minirt*, t_filert_parsed_obj*);
 
-t_minirt_com			t_minirt_load_filert(
+t_minirt_com			t_minirt_load_rtfile(
 							t_minirt	*minirt
 							, char		*filename);
 t_minirt_com 			t_minirt_add_rtresolution(

@@ -21,10 +21,10 @@ void t_sphere_set_intersection(t_object *obj
 	it = (-b - c_or_delta) / 2;
 	while (1)
 	{
-		if (it < inter->time && it > SQPREC)
+		if (it < inter->time - PREC && it > SQPREC)
 			break ;
 		it += c_or_delta;
-		if (it < inter->time && it > SQPREC)
+		if (it < inter->time - PREC && it > SQPREC)
 			break ;
 		return ;
 	}
@@ -44,8 +44,9 @@ void					t_sphere_get_coord
 }
 
 void					t_sphere_get_normal
-							(t_object* obj, t_object_coord *coords, t_direction dir)
+							(t_object* obj, t_object_coord *coords,  t_vec3 dir)
 {
-	t_vec3_smult(1 / ((t_sphere*)obj)->radius, coords->cartesian, dir);
+	t_vec3_smult(1 / ((t_sphere*)obj)->radius, coords->cartesian
+						, dir);
 	t_mat3_apply_vec3(obj->base, dir, dir);
 }
