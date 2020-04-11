@@ -15,7 +15,7 @@ t_filert_parser_com	filert_parse_int(char **str
 	filert_parser_ignore(str, FILERT_PARSER_IGNORE);
 	*parsed = 0;
 	if (!(**str >= '0' && **str <= '9'))
-		return (filert_error);
+		return (filert_error_int_expected);
 	while (1)
 	{
 		*parsed = 10 * *parsed - **str + '0';

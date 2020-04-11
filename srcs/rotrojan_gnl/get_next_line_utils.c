@@ -25,7 +25,7 @@ char		*ft_strchr(char const *s, int c)
 	return (NULL);
 }
 
-char		*ft_strdup(char const *s1)
+/*char		*ft_strdup(char const *s1)
 {
 	char			*str;
 	char			*tmp;
@@ -41,7 +41,7 @@ char		*ft_strdup(char const *s1)
 		*tmp++ = *cpy_s1++;
 	*tmp = '\0';
 	return (str);
-}
+}*/
 
 char		*ft_substr(char const *s, unsigned int start, size_t len)
 {

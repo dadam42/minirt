@@ -30,8 +30,8 @@ t_minirt_com	t_minirt_add_rtcamera(t_minirt *minirt
 	camera = malloc(sizeof(t_camera));
 	if (!camera)
 		return (minirt_mem_error);
-	t_direction_from_filert(camera->base[view], parsed->camera.direction,
-		*(minirt->default_direction));
+	t_direction_from_filert(minirt, camera->base[view]
+							, parsed->camera.direction);
 	vec3_from_filert(camera->position, parsed->camera.position);
 	camera->fov = parsed->camera.fov;
 	select_camera_orientation(minirt, camera);

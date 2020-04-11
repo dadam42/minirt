@@ -17,7 +17,6 @@ void	print_stdout(char *msg)
 int main(int argv, char **argc)
 {
 	t_minirt		minirt;
-	t_minirt_com	msg;
 	t_scene_camera_iterator camera;
 	static char	*default_filename = "minirt.bmp";
 	char		*filename;
@@ -36,13 +35,10 @@ int main(int argv, char **argc)
 		return (1);
 	}
 	t_minirt_init(&minirt);
-	msg = t_minirt_load_rtfile(&minirt, argc[1]);
-	if (msg != minirt_ok)
-	{
-		print_error("Minirt init error : memory, parse error, file.\n");
-		return (1);
-	}
-	else
+	t_minirt_load_rtfile(&minirt, argc[1]);
+	(void)camera;
+	(void)default_filename;
+	(void)filename;
 	{
 		if (argv == 4)
 			filename = argc[3];

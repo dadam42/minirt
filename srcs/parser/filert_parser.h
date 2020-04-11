@@ -5,12 +5,38 @@
 
 typedef enum	e_filert_parser_com
 {
-	filert_resolution, 
-	filert_ambiant_light, filert_camera, filert_light,
-	filert_sphere, filert_cylinder, filert_square,
-	filert_triangle, filert_plane, filert_internal
+	filert_resolution
+	, filert_ambiant_light
+	, filert_camera
+	, filert_light
+	, filert_sphere
+	, filert_cylinder
+	, filert_square
+	, filert_triangle
+	, filert_plane
+	, filert_internal
 	, filert_error
+	, filert_error_unknown_type
+	, filert_error_int_expected
+	, filert_error_float_expected
+	, filert_error_end_of_line_expected
+	, filert_error_bad_separator
+	, filert_error_color_out_of_range
+	, filert_error_intensity_out_of_range
+	, filert_error_direction_out_of_range
+	, filert_error_sphere_diameter_out_of_range
+	, filert_error_fov_out_of_range
+	, filert_error_resolution_out_of_range
 }				t_filert_parser_com;
+
+typedef struct	s_filert_error
+{
+	char	**msg;
+}				t_filert_error;
+
+void			t_filert_error_init(t_filert_error *error);
+char			*t_filert_error_get_msg(t_filert_error *error
+										, t_filert_parser_com com);
 
 typedef struct	s_filert_resolution
 {

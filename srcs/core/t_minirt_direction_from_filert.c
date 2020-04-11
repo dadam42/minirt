@@ -2,10 +2,9 @@
 #include <math.h>
 #include "libft.h"
 
-void					t_direction_from_filert(
+void					t_direction_from_filert(t_minirt *minirt, 
 							t_direction	dir,
-							t_filert_direction	rtdir,
-							t_direction			default_dir)
+							t_filert_direction	rtdir)
 {
 	double sqnorm;
 
@@ -14,5 +13,8 @@ void					t_direction_from_filert(
 	if (sqnorm > PREC)
 		t_vec3_smult(1 / sqrt(sqnorm), dir, dir);
 	else
-		ft_memcpy(dir, default_dir, sizeof(t_direction));
+	{
+		t_minirt_write_warning(minirt, direction_is_nul);
+		ft_memcpy(dir, minirt->default_direction, sizeof(t_direction));
+	}
 }

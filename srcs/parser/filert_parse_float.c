@@ -1,5 +1,13 @@
 #include "filert_parser.h"
 
+static	t_filert_parser_com filert_parse_float_tr_com(t_filert_parser_com com)
+{
+	if (com == filert_internal)
+		return (filert_internal);
+	else
+		return (filert_error_float_expected);
+}
+
 t_filert_parser_com	filert_parse_float(char **str
 												, float	*parsed)
 {
@@ -15,10 +23,10 @@ t_filert_parser_com	filert_parse_float(char **str
 	int_part_com = filert_parse_int(str, &int_part);
 	*parsed = int_part;
 	if (!(**str == '.'))
-		return (int_part_com);
+		return (filert_parse_float_tr_com(int_part_com));
 	(*str)++;
 	if (!(**str >= '0' && **str <= '9'))
-		return (int_part_com);
+		return (filert_parse_float_tr_com(int_part_com));
 	cur = (isneg == 1 ? -0.1 : 0.1);
 	while (1)
 	{

@@ -1,4 +1,19 @@
 #include "filert_parser.h"
+#include <stdbool.h>
+
+static bool isignorechar(char c)
+{
+	char *cur_ign;
+
+	cur_ign = FILERT_PARSER_IGNORE;
+	while (*cur_ign)
+	{
+		if (*cur_ign == c)
+			return (true);
+		cur_ign++;
+	}
+	return (false);
+}
 
 t_filert_parser_com filert_parse(char **str, t_filert_parsed_obj *parsed)
 {
@@ -17,10 +32,13 @@ t_filert_parser_com filert_parse(char **str, t_filert_parsed_obj *parsed)
 		cur_str = *str;
 		if (filert_parse_str(&cur_str, prefix[cur]) == filert_internal)
 		{
-			*str = cur_str;
-			return (parse[cur](str, parsed));
+			if (isignorechar(*cur_str))
+			{
+				*str = cur_str;
+				return (parse[cur](str, parsed));
+			}
 		}
 		cur++;
 	}
-	return (filert_error);
+	return (filert_error_unknown_type);
 } 

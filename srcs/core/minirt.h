@@ -5,6 +5,7 @@
 # include "array_collection.h"
 # include <stddef.h>
 # include <stdbool.h>
+# include <unistd.h>
 # define PI 3.141592653589793
 # define PREC 1e-15
 # define SQPREC 1e-6
@@ -15,9 +16,17 @@
 */
 typedef enum			e_minirt_com
 {
-	minirt_ok, minirt_error, minirt_mem_error, minirt_parse_error, minirt_file_error
+	minirt_ok
+	, minirt_error
+	, minirt_mem_error
+	, minirt_parse_error
+	, minirt_wtf_gnl
 }						t_minirt_com;
 
+typedef enum	e_minirt_warning
+{
+	direction_is_nul
+}				t_minirt_warning;
 typedef t_vec3			t_position;
 typedef t_vec3			t_direction;
 typedef	t_vec3			t_translation;
@@ -113,15 +122,17 @@ typedef enum			e_pixel_coord
 **	t_boxed_pixel_collection : model for the collection of pixels of a screen
 **	boxed by a screen_box
 **	Can be used as an iterator with the function t_boxed_pixel_collection_next
-**	Can produce film : obs is then usually the camera's position whose produced 
+**	Can produce film : obs is then usually the camera's position whose produced
 **	the screen whose produced the the boxed_pixel_collection.
 **	camera (+resolution)			-> screen
 **	screen (+screen_box)			-> boxed_pixel_collection
 **	boxed_pixel_collection(+obs +minirt)	-> film
 **	(?) Can produce image but seems useless (?)
 */
-typedef struct s_minirt	t_minirt;
-typedef struct s_scene	t_scene;
+typedef struct			s_minirt
+						t_minirt;
+typedef struct			s_scene
+						t_scene;
 
 struct					s_boxed_pixel_collection
 {
@@ -216,7 +227,34 @@ typedef struct s_intersection
 
 /*
 **	t_object : structural specification of all visible objects.
-**				mostly pointers on functions.
+**				mostly pointers on functions excepted for :
+**				position, base which create object's specific coordinates
+**				system.
+**	During the ray-tracing algorithm, ray's will be cast from an
+**  observer's point of view in a given direction.
+**  If it exists, the nearest object must be asked for many things
+**	to create an intersection (see struct s_intersection too)
+**	First : is the object intersected by the ray, and is it intersected
+**			before others objects ?
+**	inter.position : position in minirt's canonical base.
+**	inter.time: duration between cast and intersection.
+**	->set_intersection.
+**	
+**		coords	: necessary coordinates for further calculuses,
+**					each object is free to set up one or both of 
+**				+ coords.position : position of the object in
+**									object's coordinates system.
+**				+ coords.local : a 2d vector of t_float useful to
+**								map properties as albedo, normal etc,
+**								in specific realisations of an object.
+**								sphere will certainly use spherical coordinates
+**								while cylinder will use cylindrical coordinates
+**								triangles barycentric ones...
+**		normal : normal vector in pointing in the semi-space (affine) in witch
+**				the starting position of the ray stands.
+**		normal_dir : can be ext_normal or int_normal to express if the normal 
+**					points 'out' the object or 'in' the object.
+**		
 */
 
 typedef struct s_object
@@ -240,6 +278,7 @@ typedef void			(*t_object_get_normal)
 struct					s_object
 {
 	t_base						base;
+	t_position					origin;
 	t_color						albedo;
 	t_object_set_intersection	set_intersection;
 	t_object_get_coord			get_coord;
@@ -308,11 +347,11 @@ struct					s_intersection
 	t_object		*object;
 	t_ray			*ray;
 	t_time			time;
+	t_color			light_influence;
 	t_position		position;
 	t_object_coord	coords;
 	t_direction		normal;
 	t_albedo		albedo;
-	t_color			light_influence;
 	t_float			ray_dot_normal;
 };
 
@@ -379,8 +418,18 @@ void					t_scene_release(t_scene* scene);
 /*
 **	t_minirt :  the minirt principal structure, open door for UIs.
 */
-typedef struct			s_minirt
+
+typedef ssize_t			(*t_minirt_write)(t_minirt*, char*);	
+struct					s_minirt
 {
+	
+	int				stdoutput;
+	int				erroutput;
+	char			**err_msg;
+	char			**warn_msg;
+	t_minirt_write	write_error;
+	t_minirt_write	write_warning;
+	t_minirt_write	write_info;
 	t_scene			scene;
 	t_camera		*camera;
 	t_resolution	resolution;
@@ -388,14 +437,43 @@ typedef struct			s_minirt
 	t_direction		*default_direction;
 	t_color			*background_color;
 	int				max_bounce;
-}						t_minirt;
+};
 
 void					t_minirt_init(t_minirt *minirt);
 void					t_minirt_release(t_minirt* minirt);
-
+void					t_minirt_sys_fatal_error(t_minirt *minirt);
+void					t_minirt_fatal_error(t_minirt *minirt
+											, t_minirt_com errcode);
+char					*t_minirt_strerror(t_minirt* minirti
+											, t_minirt_com errcode);
+void					t_minirt_exit(t_minirt* minirt, t_minirt_com exitcode);
+void					t_minirt_write_sys_error(t_minirt *minirt);
+void					t_minirt_write_error(t_minirt *minirt
+											, t_minirt_com errcode);
+void					t_minirt_write_warning(t_minirt *minirt
+											, t_minirt_warning wcode);
+ssize_t					t_minirt_stdwrite(t_minirt *minirt, char* msg);
+ssize_t					t_minirt_errwrite(t_minirt *minirt, char* msg);
 t_minirt_com			t_save_bmpfile(
 							t_minirt	*minirt
 							, char		*filename);
+
+typedef struct			s_filert_load_loop_state
+{
+	char				*line;
+	char				*cur;
+	int					gnl;
+	int					nline;
+	t_filert_parsed_obj	parsed;
+	t_filert_parser_com		parse_ret;
+	t_minirt_com			ret;
+}						t_filert_load_loop_state;
+
+void					t_minirt_load_rtfile(
+							t_minirt	*minirt
+							, char		*filename);
+
+
 /*
 ** t_scene's functions
 */
@@ -404,22 +482,20 @@ t_minirt_com	t_scene_add_object(t_scene *scene, t_object *object);
 t_minirt_com	t_scene_add_light(t_scene *scene, t_light *light);
 t_minirt_com	t_scene_add_camera(t_scene *scene, t_camera *camera);
 
-
 /*
 **	t_minirt's functions
 */
 void					t_minirt_init_object(t_minirt *minirt
-							, t_object *object);
+							, t_object *object, t_position, t_base base);
 
 /*
 **	Pluggging in filertparser
 */
 
-typedef t_minirt_com (*t_minirt_rtobject_adder)(t_minirt*, t_filert_parsed_obj*);
+typedef t_minirt_com	(*t_minirt_rtobject_adder)(
+							t_minirt*
+							, t_filert_parsed_obj*);
 
-t_minirt_com			t_minirt_load_rtfile(
-							t_minirt	*minirt
-							, char		*filename);
 t_minirt_com 			t_minirt_add_rtresolution(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
@@ -435,7 +511,19 @@ t_minirt_com 			t_minirt_add_rtlight(
 t_minirt_com 			t_minirt_add_rtsphere(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			t_minirt_add_rtcylinder(
+void					vec3_from_filert(t_vec3 minirt_vec
+							, float filert_vec[3]);
+void					t_color_from_filert(
+							t_color		color
+							, t_filert_color	rtcolor);
+void					t_pcolor_from_filert(
+							t_color		*color
+							, t_filert_pcolor	*rtpcolor);
+void					t_direction_from_filert(t_minirt *minirt
+							, t_direction	dir
+							, t_filert_direction	rtdir);
+#endif
+/*t_minirt_com 			t_minirt_add_rtcylinder(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
 t_minirt_com 			t_minirt_add_rtsquare(
@@ -446,17 +534,4 @@ t_minirt_com 			t_minirt_add_rttriangle(
 							, t_filert_parsed_obj	*parsed);
 t_minirt_com 			t_minirt_add_rtplane(
 							t_minirt				*minirt
-							, t_filert_parsed_obj	*parsed);
-void					vec3_from_filert(t_vec3 minirt_vec
-							, float filert_vec[3]);
-void					t_color_from_filert(
-							t_color		color
-							, t_filert_color	rtcolor);
-void					t_pcolor_from_filert(
-							t_color		*color
-							, t_filert_pcolor	*rtpcolor);
-void					t_direction_from_filert(
-							t_direction	dir
-							, t_filert_direction	rtdir
-							, t_direction	default_dir);
-#endif
+							, t_filert_parsed_obj	*parsed);*/

@@ -26,3 +26,15 @@ t_minirt_com	t_minirt_add_rtsphere(t_minirt *minirt
 	((t_object*)sphere)->get_normal = t_sphere_get_normal;
 	return (t_scene_add_object(&minirt->scene, (t_object*)sphere));
 }
+
+/*
+t_minirt_com	t_minirt_add_rtsphere(t_minirt *minirt
+								, t_filert_parsed_obj *parsed)
+{
+	t_sphere *sphere;
+
+	sphere = malloc(sizeof(t_sphere));
+	if (!sphere)
+		t_minirt_fatal_error(minirt, minirt_mem_error);
+	t_color_from_filert(sphere->obj.);
+}*/

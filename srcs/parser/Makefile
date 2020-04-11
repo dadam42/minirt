@@ -8,7 +8,7 @@ STDLIBS=#list of list which must be include to compile
 foo_DIR=..#mandatory, directory containing both library and its Makefile.
 foo_INC=#optionnal, default to lib_DIR : dirname containing lib's headers files.
 #-- srcs definition :
-SRCS=filert_parse_ambiant_light.c filert_parse.c filert_parse_camera.c filert_parse_color.c filert_parse_cylinder.c filert_parse_direction.c filert_parse_float.c filert_parse_int.c filert_parse_light.c filert_parse_pcolor.c filert_parse_plane.c filert_parse_position.c filert_parse_resolution.c filert_parser_ignore.c filert_parse_sphere.c filert_parse_square.c filert_parse_str.c filert_parse_triangle.c 
+SRCS=filert_error_get_msg.c filert_parse_ambiant_light.c filert_parse.c filert_parse_camera.c filert_parse_color.c filert_parse_cylinder.c filert_parse_direction.c filert_parse_float.c filert_parse_int.c filert_parse_light.c filert_parse_pcolor.c filert_parse_plane.c filert_parse_position.c filert_parse_resolution.c filert_parser_ignore.c filert_parse_sphere.c filert_parse_square.c filert_parse_str.c filert_parse_triangle.c t_filert_error_init.c 
 SRCS_DIRS=
 SRCS_INCS=.#
 #
