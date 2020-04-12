@@ -55,7 +55,7 @@ static void parse_error_special_treatment(t_minirt *minirt
 	minirt_exit(minirt, minirt_error);
 }
 
-static void	rtfile_load_loop(int fd, t_minirt* minirt)
+static void	filert_load_loop(int fd, t_minirt* minirt)
 {
 	t_filert_load_loop_state state;
 
@@ -86,14 +86,13 @@ static void	rtfile_load_loop(int fd, t_minirt* minirt)
 	}
 }
 
-void				minirt_load_rtfile(t_minirt *minirt, char *filename)
+void				minirt_load_filert(t_minirt *minirt, char *filename)
 {
 	int					fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		minirt_sys_fatal_error(minirt);
-	rtfile_load_loop(fd, minirt);
+	filert_load_loop(fd, minirt);
 	close(fd);
-	
 }

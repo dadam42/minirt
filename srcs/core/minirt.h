@@ -469,7 +469,7 @@ typedef struct			s_filert_load_loop_state
 	t_minirt_com			ret;
 }						t_filert_load_loop_state;
 
-void					minirt_load_rtfile(
+void					minirt_load_filert(
 							t_minirt	*minirt
 							, char		*filename);
 

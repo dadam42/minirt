@@ -54,7 +54,7 @@ static t_minirt_com	bmp_writing_loop(t_minirt *minirt
 
 static void minirt_handle_save_bmperror(t_minirt* minirt, t_minirt_com com)
 {
-	if (ret != minirt_ok)
+	if (com != minirt_ok)
 	{
 		minirt->write_error(minirt, "When I tried to save .bmp file\n");
 		minirt_sys_fatal_error(minirt);

@@ -35,7 +35,7 @@ int main(int argv, char **argc)
 		return (1);
 	}
 	minirt_init(&minirt);
-	minirt_load_rtfile(&minirt, argc[1]);
+	minirt_load_filert(&minirt, argc[1]);
 	(void)camera;
 	(void)default_filename;
 	(void)filename;
