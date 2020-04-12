@@ -69,7 +69,7 @@ typedef union			u_film
 	t_rgb_comp	*rgb;
 }						t_film;
 /*Convert (in place)size pixels from legacy to rgb starting at film*/
-void					t_film_legacy_to_rgb(t_film *film
+void					film_legacy_to_rgb(t_film *film
 									, int size);
 
 /*
@@ -97,7 +97,7 @@ typedef struct s_boxed_pixel_collection
 						t_boxed_pixel_collection;
 typedef struct s_screen_box
 						t_screen_box;
-void					t_screen_get_boxed_pixel_collection(
+void					screen_get_boxed_pixel_collection(
 							t_screen					*screen
 							, t_screen_box				*box
 							, t_boxed_pixel_collection	*collection);
@@ -143,17 +143,17 @@ struct					s_boxed_pixel_collection
 	t_translation	dh;
 	t_translation	dw;
 };
-void					t_boxed_pixel_collection_get_film(
+void					boxed_pixel_collection_get_film(
 							t_boxed_pixel_collection	*collection
 							, t_minirt					*minirt
 							, t_position				*obs
 							, t_film					*film);
-void					t_boxed_pixel_collection_get_image(
+void					boxed_pixel_collection_get_image(
 							t_boxed_pixel_collection *collection
 							, t_scene				*scene
 							, t_position			*obs
 							, t_image				*image);
-bool					t_boxed_pixel_collection_next(
+bool					boxed_pixel_collection_next(
 							t_boxed_pixel_collection	*collection);
 
 /*
@@ -173,15 +173,15 @@ typedef struct			s_camera
 	t_position	position;
 	double		fov;
 }						t_camera;
-void					t_camera_get_image(
+void					camera_get_image(
 							t_camera	*camera
 							, t_scene	*scene
 							, t_image	*image);
-void					t_camera_get_screen(
+void					camera_get_screen(
 							t_camera		*camera
 							, t_resolution	*resolution
 							, t_screen		*screen);
-void					t_camera_get_boxed_image(
+void					camera_get_boxed_image(
 							t_camera		*camera
 							, t_scene		*scene
 							, t_image		*image
@@ -190,7 +190,7 @@ void					t_camera_get_boxed_image(
 /*
 **	t_ray : model for a ray.
 **	Can produce color 
-**	t_ray_get_color(t_ray*, t_scene*, t_color) is the entry point
+**	ray_get_color(t_ray*, t_scene*, t_color) is the entry point
 **		of the raytracing algorithm.
 */
 typedef struct			s_ray
@@ -199,15 +199,15 @@ typedef struct			s_ray
 	t_direction	direction;
 }						t_ray;
 /* t_ray_init returns the distance between orig and target */
-t_size					t_ray_init(
+t_size					ray_init(
 							t_ray			*ray
 							, t_position	orig
 							, t_position	target);
-void					t_ray_get_color(
+void					ray_get_color(
 							t_ray		*ray
 							, t_minirt	*minirt
 							, t_color	color);
-/*(?) t_color_ray : Never used, to remove (?)*/
+/*(?) color_ray : Never used, to remove (?)*/
 typedef struct			s_color_ray
 {
 	t_ray	ray;
@@ -286,13 +286,13 @@ struct					s_object
 	t_object_get_albedo			get_albedo;
 };
 
-void					t_object_preset_intersection(t_object *object
+void					object_preset_intersection(t_object *object
 								, t_intersection *inter);
 /*
 **	Fall over get_albedo
 */
 
-void					t_object_dummy_get_albedo
+void					object_dummy_get_albedo
 							(t_object *obj
 							, t_object_coord *coord, t_albedo albedo);
 
@@ -326,15 +326,15 @@ typedef struct			s_sphere
 	t_size		radius;
 }						t_sphere;
 
-void 					t_sphere_set_intersection(t_object *obj
+void 					sphere_set_intersection(t_object *obj
 							, t_ray *ray, t_intersection *intersection);
-void 					t_sphere_set_intersection_alt(t_object *obj
+void 					sphere_set_intersection_alt(t_object *obj
 							, t_ray *ray, t_intersection *intersection);
-void					*t_sphere_get_albedo(t_object*
+void					*sphere_get_albedo(t_object*
 							, t_object_coord *coord, t_albedo);
-void					t_sphere_get_coord
+void					sphere_get_coord
 							(t_object*, t_position, t_object_coord*);
-void					t_sphere_get_normal
+void					sphere_get_normal
 							(t_object*, t_object_coord *coord, t_vec3 dir);
 /*
 **	t_intersection : 	heart of ray tracing algorithm's datas.
@@ -355,9 +355,9 @@ struct					s_intersection
 	t_float			ray_dot_normal;
 };
 
-void					t_intersection_init(t_intersection *inter
+void					intersection_init(t_intersection *inter
 							, t_scene *scene, t_ray *ray, t_time time);
-void					t_intersection_complete(t_intersection *inter);
+void					intersection_complete(t_intersection *inter);
 
 /*
 **	t_scene and iterators : basically gathering visual objects and lights
@@ -402,19 +402,19 @@ struct					s_scene_camera_iterator
 	t_camera						*(*deref)(t_scene_camera_iterator*);
 };
 
-void					t_scene_get_object_iterator(
+void					scene_get_object_iterator(
 							t_scene						*scene
 							, t_scene_object_iterator	*it);
-void					t_scene_get_light_iterator(
+void					scene_get_light_iterator(
 							t_scene						*scene
 							, t_scene_light_iterator	*it);
-void					t_scene_get_camera_iterator(
+void					scene_get_camera_iterator(
 							t_scene						*scene
 							, t_scene_camera_iterator	*it);
-void					t_scene_get_light_influence(t_scene *scene
+void					scene_get_light_influence(t_scene *scene
 							, t_intersection *inter);
-void					t_scene_init(t_scene* scene);
-void					t_scene_release(t_scene* scene);
+void					scene_init(t_scene* scene);
+void					scene_release(t_scene* scene);
 /*
 **	t_minirt :  the minirt principal structure, open door for UIs.
 */
@@ -439,22 +439,22 @@ struct					s_minirt
 	int				max_bounce;
 };
 
-void					t_minirt_init(t_minirt *minirt);
-void					t_minirt_release(t_minirt* minirt);
-void					t_minirt_sys_fatal_error(t_minirt *minirt);
-void					t_minirt_fatal_error(t_minirt *minirt
+void					minirt_init(t_minirt *minirt);
+void					minirt_release(t_minirt* minirt);
+void					minirt_sys_fatal_error(t_minirt *minirt);
+void					minirt_fatal_error(t_minirt *minirt
 											, t_minirt_com errcode);
-char					*t_minirt_strerror(t_minirt* minirti
+char					*minirt_strerror(t_minirt* minirti
 											, t_minirt_com errcode);
-void					t_minirt_exit(t_minirt* minirt, t_minirt_com exitcode);
-void					t_minirt_write_sys_error(t_minirt *minirt);
-void					t_minirt_write_error(t_minirt *minirt
+void					minirt_exit(t_minirt* minirt, t_minirt_com exitcode);
+void					minirt_write_sys_error(t_minirt *minirt);
+void					minirt_write_error(t_minirt *minirt
 											, t_minirt_com errcode);
-void					t_minirt_write_warning(t_minirt *minirt
+void					minirt_write_warning(t_minirt *minirt
 											, t_minirt_warning wcode);
-ssize_t					t_minirt_stdwrite(t_minirt *minirt, char* msg);
-ssize_t					t_minirt_errwrite(t_minirt *minirt, char* msg);
-t_minirt_com			t_save_bmpfile(
+ssize_t					minirt_stdwrite(t_minirt *minirt, char* msg);
+ssize_t					minirt_errwrite(t_minirt *minirt, char* msg);
+t_minirt_com			minirt_save_bmpfile(
 							t_minirt	*minirt
 							, char		*filename);
 
@@ -469,7 +469,7 @@ typedef struct			s_filert_load_loop_state
 	t_minirt_com			ret;
 }						t_filert_load_loop_state;
 
-void					t_minirt_load_rtfile(
+void					minirt_load_rtfile(
 							t_minirt	*minirt
 							, char		*filename);
 
@@ -478,14 +478,14 @@ void					t_minirt_load_rtfile(
 ** t_scene's functions
 */
 
-t_minirt_com	t_scene_add_object(t_scene *scene, t_object *object);
-t_minirt_com	t_scene_add_light(t_scene *scene, t_light *light);
-t_minirt_com	t_scene_add_camera(t_scene *scene, t_camera *camera);
+t_minirt_com	scene_add_object(t_scene *scene, t_object *object);
+t_minirt_com	scene_add_light(t_scene *scene, t_light *light);
+t_minirt_com	scene_add_camera(t_scene *scene, t_camera *camera);
 
 /*
 **	t_minirt's functions
 */
-void					t_minirt_init_object(t_minirt *minirt
+void					minirt_init_object(t_minirt *minirt
 							, t_object *object, t_position, t_base base);
 
 /*
@@ -496,42 +496,82 @@ typedef t_minirt_com	(*t_minirt_rtobject_adder)(
 							t_minirt*
 							, t_filert_parsed_obj*);
 
-t_minirt_com 			t_minirt_add_rtresolution(
+t_minirt_com 			minirt_add_rtresolution(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			t_minirt_add_rtambiant_light(
+t_minirt_com 			minirt_add_rtambiant_light(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			t_minirt_add_rtcamera(
+t_minirt_com 			minirt_add_rtcamera(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			t_minirt_add_rtlight(
+t_minirt_com 			minirt_add_rtlight(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			t_minirt_add_rtsphere(
+t_minirt_com 			minirt_add_rtsphere(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
 void					vec3_from_filert(t_vec3 minirt_vec
 							, float filert_vec[3]);
-void					t_color_from_filert(
+void					color_from_filert(
 							t_color		color
 							, t_filert_color	rtcolor);
-void					t_pcolor_from_filert(
+void					pcolor_from_filert(
 							t_color		*color
 							, t_filert_pcolor	*rtpcolor);
-void					t_direction_from_filert(t_minirt *minirt
+void					direction_from_filert(t_minirt *minirt
 							, t_direction	dir
 							, t_filert_direction	rtdir);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+t_minirt_com 			minirt_add_rtcylinder(
+							t_minirt				*minirt
+							, t_filert_parsed_obj	*parsed);
+t_minirt_com 			minirt_add_rtsquare(
+							t_minirt				*minirt
+							, t_filert_parsed_obj	*parsed);
+t_minirt_com 			minirt_add_rttriangle(
+							t_minirt				*minirt
+							, t_filert_parsed_obj	*parsed);
+t_minirt_com 			minirt_add_rtplane(
+							t_minirt				*minirt
+							, t_filert_parsed_obj	*parsed);
 #endif
-/*t_minirt_com 			t_minirt_add_rtcylinder(
-							t_minirt				*minirt
-							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			t_minirt_add_rtsquare(
-							t_minirt				*minirt
-							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			t_minirt_add_rttriangle(
-							t_minirt				*minirt
-							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			t_minirt_add_rtplane(
-							t_minirt				*minirt
-							, t_filert_parsed_obj	*parsed);*/

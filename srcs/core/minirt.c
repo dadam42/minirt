@@ -34,8 +34,8 @@ int main(int argv, char **argc)
 		print_error("The only available option is --save.\n");
 		return (1);
 	}
-	t_minirt_init(&minirt);
-	t_minirt_load_rtfile(&minirt, argc[1]);
+	minirt_init(&minirt);
+	minirt_load_rtfile(&minirt, argc[1]);
 	(void)camera;
 	(void)default_filename;
 	(void)filename;
@@ -44,12 +44,12 @@ int main(int argv, char **argc)
 			filename = argc[3];
 		else
 			filename = default_filename;
-		t_scene_get_camera_iterator(&minirt.scene, &camera);
+		scene_get_camera_iterator(&minirt.scene, &camera);
 		camera.next(&camera);
 		minirt.camera = camera.deref(&camera);
-		t_save_bmpfile(&minirt, filename);
+		minirt_save_bmpfile(&minirt, filename);
 		print_stdout("Ok.\n");
 	}
-	t_minirt_release(&minirt);
+	minirt_release(&minirt);
 	return(0);
 }
