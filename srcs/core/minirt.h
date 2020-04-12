@@ -454,7 +454,7 @@ void					minirt_write_warning(t_minirt *minirt
 											, t_minirt_warning wcode);
 ssize_t					minirt_stdwrite(t_minirt *minirt, char* msg);
 ssize_t					minirt_errwrite(t_minirt *minirt, char* msg);
-t_minirt_com			minirt_save_bmpfile(
+void					minirt_save_bmpfile(
 							t_minirt	*minirt
 							, char		*filename);
 
