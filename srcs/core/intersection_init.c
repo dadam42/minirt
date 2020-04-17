@@ -1,6 +1,14 @@
 #include "minirt.h"
 #include "libft.h"
 
+void	intersection_init(t_intersection *inter, t_ray *ray, t_time time, t_intensity intensity)
+{
+	inter->object = 0;
+	inter->ray = ray;
+	inter->time = time;
+	inter->intensity = intensity;
+}
+/*
 void	intersection_init(t_intersection *inter
 						, t_scene *scene, t_ray *ray, t_time time)
 {
@@ -14,3 +22,4 @@ void	intersection_init(t_intersection *inter
 	while (object_it.next(&object_it))
 		object_preset_intersection(object_it.deref(&object_it), inter);
 }
+*/

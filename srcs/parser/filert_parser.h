@@ -5,15 +5,23 @@
 
 typedef enum	e_filert_parser_com
 {
-	filert_resolution
+	filert_prop_begin
+	, filert_resolution
 	, filert_ambiant_light
+	, filert_prop_end
+	, filert_camera_begin
 	, filert_camera
+	, filert_camera_end
+	, filert_light_begin
 	, filert_light
+	, filert_light_end
+	, filert_object_begin
 	, filert_sphere
 	, filert_cylinder
 	, filert_square
 	, filert_triangle
 	, filert_plane
+	, filert_object_end
 	, filert_internal
 	, filert_error
 	, filert_error_unknown_type

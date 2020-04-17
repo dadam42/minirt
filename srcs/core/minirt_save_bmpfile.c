@@ -17,7 +17,7 @@ void	film_legacy_to_rgb(t_film *film
 		comp = -1;
 		while (++comp <= blue)
 		{
-			cur_comp_intensity = 256 * pow(film->legacy[cur][comp], 0.45);
+			cur_comp_intensity = 255 * pow(film->legacy[cur][comp], 0.45);
 			film->rgb[3 * cur + 2 - comp] =
 				(cur_comp_intensity > 255 ? 255 : cur_comp_intensity);
 		}

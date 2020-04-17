@@ -14,7 +14,7 @@ void	boxed_pixel_collection_get_film(
 	{
 		t_vec3_init_by_plot3(ray.start, collection->position, ray.direction);
 		t_vec3_normalize(ray.direction);
-		ray_get_color(&ray, minirt
+		scene_get_ray_intensity(&minirt->scene, &ray
 			, film->legacy[collection->cur[height]
 							* (collection->max[0] - collection->min[0])
 							+ collection->cur[width] - collection->min[0]]);

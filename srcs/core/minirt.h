@@ -14,31 +14,45 @@
 /*
 ** Basic typedefs for further structures.
 */
+typedef double			t_float;
+typedef t_vec3			t_position;
+typedef t_vec3			t_direction;
+typedef	t_vec3			t_translation;
+typedef t_vec3			t_normal;
+typedef	t_mat3			t_base;
+typedef unsigned char	t_rgb_comp;
+typedef t_float			t_size;
+typedef t_vec3			t_intensity;
+typedef	t_vec3			t_albedo;
+typedef t_float			t_time;
+typedef t_rgb_comp		t_pixel_color[3];
+typedef t_size			t_local_coord[2];
+
+/* Aliases */
+typedef	t_intensity		t_color;
+typedef t_time			t_distance;
+/* -- End of Aliases */
+
+/*
+** Own minirt structures.
+*/
+
 typedef enum			e_minirt_com
 {
 	minirt_ok
 	, minirt_error
 	, minirt_mem_error
 	, minirt_parse_error
-	, minirt_wtf_gnl
+	, minirt_bad_object
 }						t_minirt_com;
 
 typedef enum	e_minirt_warning
 {
 	direction_is_nul
+	, height_is_nul
+	, width_is_nul
+	, size_is_nul
 }				t_minirt_warning;
-typedef t_vec3			t_position;
-typedef t_vec3			t_direction;
-typedef	t_vec3			t_translation;
-typedef t_vec3			t_normal;
-typedef	t_mat3			t_base;
-typedef double			t_float;
-typedef unsigned char	t_rgb_comp;
-typedef t_float			t_size;
-typedef t_float			t_intensity;
-typedef t_float			t_time;
-typedef t_rgb_comp		t_pixel_color[3];
-typedef t_size			t_local_coord[2];
 typedef enum			e_comp
 {
 	red, green, blue
@@ -65,8 +79,8 @@ typedef	struct			s_observer
 */
 typedef union			u_film
 {
-	t_color		*legacy;
-	t_rgb_comp	*rgb;
+	t_intensity		*legacy;
+	t_rgb_comp		*rgb;
 }						t_film;
 /*Convert (in place)size pixels from legacy to rgb starting at film*/
 void					film_legacy_to_rgb(t_film *film
@@ -190,8 +204,9 @@ void					camera_get_boxed_image(
 /*
 **	t_ray : model for a ray.
 **	Can produce color 
-**	ray_get_color(t_ray*, t_scene*, t_color) is the entry point
-**		of the raytracing algorithm.
+**	scene_get_ray_intensity(t_ray*, t_scene*, t_color) is the terminal point
+**		of the raytracing algorithm when recurse is used
+**		and the entry point when there's no recursion.
 */
 typedef struct			s_ray
 {
@@ -199,14 +214,10 @@ typedef struct			s_ray
 	t_direction	direction;
 }						t_ray;
 /* t_ray_init returns the distance between orig and target */
-t_size					ray_init(
+t_distance					ray_init(
 							t_ray			*ray
 							, t_position	orig
 							, t_position	target);
-void					ray_get_color(
-							t_ray		*ray
-							, t_minirt	*minirt
-							, t_color	color);
 /*(?) color_ray : Never used, to remove (?)*/
 typedef struct			s_color_ray
 {
@@ -267,34 +278,47 @@ typedef struct s_object_coord
 **		any new object realisation
 */
 
-typedef void			(*t_object_set_intersection)
-							(t_object*, t_ray*, t_intersection*);
+typedef void			(*t_object_get_intersection)
+							(t_object*, t_intersection*);
 typedef void			(*t_object_get_albedo)
 							(t_object*, t_object_coord*, t_albedo);
 typedef void			(*t_object_get_coord)
 							(t_object*, t_position, t_object_coord*);
 typedef void			(*t_object_get_normal)
-							(t_object*, t_object_coord*, t_vec3);
+							(t_object*, t_object_coord*, t_normal);
 struct					s_object
 {
 	t_base						base;
 	t_position					origin;
 	t_color						albedo;
-	t_object_set_intersection	set_intersection;
+	t_object_get_intersection	get_first_intersection;
 	t_object_get_coord			get_coord;
 	t_object_get_normal			get_normal;
 	t_object_get_albedo			get_albedo;
 };
 
-void					object_preset_intersection(t_object *object
-								, t_intersection *inter);
+void					object_pre_init(t_object *object
+										, t_position origin
+										, t_base	base);
+
+bool					object_base_init(t_object *object
+										, t_direction norm
+										,  t_base canonical);
 /*
-**	Fall over get_albedo
+**	Predefined pointers
 */
 
 void					object_dummy_get_albedo
 							(t_object *obj
 							, t_object_coord *coord, t_albedo albedo);
+void					object_noop_get_first_intersection(t_object *object
+											, t_intersection *inter);
+void					object_noop_get_coord(t_object *object
+											, t_position position
+											, t_object_coord *coord);
+void					object_noop_get_normal(t_object *object
+											, t_object_coord *coord
+											, t_normal normal);
 
 /*
 **	The following realisations of the above t_object type can use a couple of
@@ -316,30 +340,66 @@ struct			s_object_coord
 };
 
 /*
+** t_plane 
+*/
+
+typedef			t_object
+				t_plane;
+
+void	plane_get_first_intersection(t_object *object
+									, t_intersection *inter);
+void	plane_get_coord(t_object *object, t_position position
+						, t_object_coord *coord);
+void	plane_get_normal(t_object *object, t_object_coord *coord
+							, t_direction normal);
+/*
 ** t_sphere :  a realisation of t_object defined above.
 */
 
 typedef struct			s_sphere
 {
 	t_object	object;
-	t_position	center;
 	t_size		radius;
 }						t_sphere;
 
-void 					sphere_set_intersection(t_object *obj
-							, t_ray *ray, t_intersection *intersection);
-void 					sphere_set_intersection_alt(t_object *obj
-							, t_ray *ray, t_intersection *intersection);
+void					sphere_init(t_sphere *sphere);
+void 					sphere_get_first_intersection(t_object *obj
+							, t_intersection *intersection);
 void					*sphere_get_albedo(t_object*
 							, t_object_coord *coord, t_albedo);
 void					sphere_get_coord
 							(t_object*, t_position, t_object_coord*);
 void					sphere_get_normal
 							(t_object*, t_object_coord *coord, t_vec3 dir);
+
+typedef struct			s_cylinder
+{
+	t_object	object;
+	t_size		radius;
+	t_size		height;
+}						t_cylinder;
+
+void 					cylinder_get_first_intersection(t_object *obj
+							, t_intersection *intersection);
+void					*cylinder_get_albedo(t_object*
+							, t_object_coord *coord, t_albedo);
+void					cylinder_get_coord
+							(t_object*, t_position, t_object_coord*);
+void					cylinder_get_normal
+							(t_object*, t_object_coord *coord, t_vec3 dir);
 /*
 **	t_intersection : 	heart of ray tracing algorithm's datas.
 **						it gather and cache any data required for
 **						the ray tracing algorithm.
+**	rson stands for the scalar product of ray's direction and the normal
+**		pointing outside the object.
+**	the normal is eventually flipped in intersection_complete to point in the
+**	ray.start's semi-space :
+**
+**		  R	 N  
+**		   \ | 
+**		____\|_____
+**		     I
 */
 
 struct					s_intersection
@@ -347,18 +407,19 @@ struct					s_intersection
 	t_object		*object;
 	t_ray			*ray;
 	t_time			time;
-	t_color			light_influence;
-	t_position		position;
-	t_object_coord	coords;
-	t_direction		normal;
 	t_albedo		albedo;
-	t_float			ray_dot_normal;
+	t_float			*intensity;
+	t_position		position;
+	t_object_coord	coord;
+	t_direction		normal;
+	t_float			rson;
 };
 
 void					intersection_init(t_intersection *inter
-							, t_scene *scene, t_ray *ray, t_time time);
+							, t_ray *ray, t_time time
+							, t_intensity intensity);
 void					intersection_complete(t_intersection *inter);
-
+void					intersection_set_own_intensity(t_intersection *inter);
 /*
 **	t_scene and iterators : basically gathering visual objects and lights
 **	defines its iterators if the type of collection is changed so the
@@ -413,6 +474,16 @@ void					scene_get_camera_iterator(
 							, t_scene_camera_iterator	*it);
 void					scene_get_light_influence(t_scene *scene
 							, t_intersection *inter);
+void					scene_get_background_intensity(t_scene *scene
+										, t_intensity intensity);
+void					scene_get_ray_intensity(
+							t_scene	*scene
+							, t_ray		*ray
+							, t_intensity	intensity);
+void					scene_set_intersection_intensity(t_scene *scene
+								, t_intersection *inter);
+void					scene_get_first_intersection(t_scene *scene
+										, t_intersection *inter);
 void					scene_init(t_scene* scene);
 void					scene_release(t_scene* scene);
 /*
@@ -435,6 +506,8 @@ struct					s_minirt
 	t_resolution	resolution;
 	t_base			*canonical;
 	t_direction		*default_direction;
+	int				default_display_width;
+	int				default_display_height;
 	t_color			*background_color;
 	int				max_bounce;
 };
@@ -473,7 +546,9 @@ void					minirt_load_filert(
 							t_minirt	*minirt
 							, char		*filename);
 
-
+t_minirt_com			minirt_check_object_integrity(
+												t_minirt *minirt
+												, t_object *object);
 /*
 ** t_scene's functions
 */
@@ -485,30 +560,32 @@ t_minirt_com	scene_add_camera(t_scene *scene, t_camera *camera);
 /*
 **	t_minirt's functions
 */
-void					minirt_init_object(t_minirt *minirt
-							, t_object *object, t_position, t_base base);
 
 /*
 **	Pluggging in filertparser
 */
 
-typedef t_minirt_com	(*t_minirt_rtobject_adder)(
+typedef t_object		*(*t_minirt_rtobject_adder)(
 							t_minirt*
 							, t_filert_parsed_obj*);
 
+t_minirt_com			minirt_add_prop_from_filert(
+							t_minirt	*minirt
+							, t_filert_parser_com type
+							, t_filert_parsed_obj	*parsed);
 t_minirt_com 			minirt_add_rtresolution(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
 t_minirt_com 			minirt_add_rtambiant_light(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			minirt_add_rtcamera(
+t_minirt_com			minirt_add_rtcamera(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			minirt_add_rtlight(
+t_minirt_com			minirt_add_rtlight(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			minirt_add_rtsphere(
+t_object 				*minirt_add_rtsphere(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
 void					vec3_from_filert(t_vec3 minirt_vec
@@ -562,16 +639,43 @@ void					direction_from_filert(t_minirt *minirt
 
 
 
-t_minirt_com 			minirt_add_rtcylinder(
+t_object 				*minirt_add_rtcylinder(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			minirt_add_rtsquare(
+t_object 				*minirt_add_rtsquare(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			minirt_add_rttriangle(
+t_object 				*minirt_add_rttriangle(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-t_minirt_com 			minirt_add_rtplane(
+t_object 				*minirt_add_rtplane(
 							t_minirt				*minirt
 							, t_filert_parsed_obj	*parsed);
-#endif
+
+void					get_flipped_direction(t_vec3 dir
+											, t_vec3 normal
+											, t_vec3 flipped);
+
+/* Struct solvers */
+
+typedef struct	s_py2_solver
+{
+	t_float			sol;
+	t_float			inc;
+	char			nsol;
+	char			cursol;
+}				t_py2_solver;
+
+void					py2_solver_init(t_py2_solver *solver
+										, t_float coefs[3]);
+bool					py2_next_sol(t_py2_solver *solver);
+t_float					py2_get_sol(t_py2_solver *solver);
+bool					get_minimum_positive_upy2_solution_if_exists(
+													double ucoefs[2]
+													, double *sol
+													, double max);
+bool					get_minimum_positive_py2_solution_if_exists(
+													double coefs[3]
+													, double *sol
+													, double max);
+#endif	
