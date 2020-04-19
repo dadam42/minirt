@@ -3,22 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/15 10:59:57 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/24 16:31:35 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/08 11:14:23 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/15 14:18:46 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memchr(void const *s, int c, size_t n)
+void	*ft_memchr(const void *haystack, int needle, size_t range)
 {
-	while (n--)
+	size_t cdx;
+
+	cdx = 0;
+	while (cdx < range)
 	{
-		if (*(unsigned char*)s == (unsigned char)c)
-			return ((void*)s);
-		s++;
+		if (*((unsigned char*)haystack + cdx) ==
+			(unsigned char)needle)
+			return ((void*)(haystack + cdx));
+		cdx++;
 	}
 	return (NULL);
 }

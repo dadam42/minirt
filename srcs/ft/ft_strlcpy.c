@@ -3,26 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/17 10:24:48 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/25 20:40:02 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/08 13:31:21 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/15 23:45:44 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_strlcpy(char *dst, char const *src, size_t dstsize)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t		len_src;
+	const char *fwd_src;
 
-	len_src = ft_strlen(src);
-	if (dstsize > len_src)
-		ft_memcpy(dst, src, len_src + 1);
-	else if (dstsize)
+	fwd_src = src;
+	if (dstsize)
 	{
-		ft_memcpy(dst, src, dstsize - 1);
-		*(dst + dstsize - 1) = '\0';
+		while (dstsize > 1 && *fwd_src)
+		{
+			*dst = *fwd_src;
+			dstsize--;
+			fwd_src++;
+			dst++;
+		}
+		*dst = 0;
 	}
-	return (len_src);
+	while (*fwd_src)
+		fwd_src++;
+	return (fwd_src - src);
 }

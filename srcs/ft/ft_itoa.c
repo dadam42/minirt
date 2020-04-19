@@ -3,52 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/12 00:45:45 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/28 16:32:17 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/12 14:54:20 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/15 15:36:03 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void		fill_tab(int n, unsigned char size, char **str)
+static char	*ft_builda_itoa(int n, int sign, int div, size_t dgt_cnt)
 {
-	(*str)[--size] = '\0';
-	if (n < 0)
+	int		q;
+	char	*ret;
+	char	*fwd_ret;
+
+	if ((ret = malloc((dgt_cnt + 1 + (sign == -1 ? 1 : 0)) * sizeof(char))))
 	{
-		(*str)[0] = '-';
-		n = -n;
+		fwd_ret = ret;
+		if (sign == -1)
+			*fwd_ret++ = '-';
+		while (div > 0)
+		{
+			q = n / div;
+			*fwd_ret++ = '0' - q;
+			n -= q * div;
+			div /= 10;
+		}
+		*fwd_ret = 0;
 	}
-	while (n)
-	{
-		(*str)[--size] = n % 10 + '0';
-		n = n / 10;
-	}
+	return (ret);
 }
 
-char			*ft_itoa(int n)
+char		*ft_itoa(int n)
 {
-	unsigned char	size;
-	int				tmp;
-	char			*str;
+	int		div;
+	int		sign;
+	int		dgt_cnt;
 
-	if (!n)
-		str = ft_strdup("0");
-	else if (n == -2147483648)
-		str = ft_strdup("-2147483648");
+	sign = 1;
+	if (n >= 0)
+		n = -n;
 	else
+		sign = -1;
+	div = 1;
+	dgt_cnt = 0;
+	while (n / div <= -10)
 	{
-		size = n < 0 ? 2 : 1;
-		tmp = n;
-		while (tmp)
-		{
-			tmp /= 10;
-			size++;
-		}
-		if (!(str = (char*)malloc(sizeof(*str) * (size))))
-			return (NULL);
-		fill_tab(n, size, &str);
+		div *= 10;
+		dgt_cnt++;
 	}
-	return (str);
+	return (ft_builda_itoa(n, sign, div, dgt_cnt));
 }

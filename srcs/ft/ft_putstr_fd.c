@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 14:39:57 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/30 10:33:39 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/12 16:32:54 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/12 16:34:14 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	if (s)
-		while (*s)
-			write(fd, s++, 1);
+	size_t size;
+
+	size = ft_strlen(s);
+	write(fd, s, size);
 }

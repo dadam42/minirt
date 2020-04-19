@@ -3,49 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/08 14:54:21 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/30 22:51:59 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/10 14:52:44 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/15 23:23:48 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-static size_t		ft_strnlen(char const *s, size_t maxlen)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*tmp;
+	char	*ret;
+	size_t	len_alloc;
+	size_t	strlen;
 
-	tmp = (char*)s;
-	while (maxlen-- && *tmp)
-		tmp++;
-	return ((size_t)(tmp - s));
-}
-
-static char			*ft_strndup(const char *s1, size_t n)
-{
-	char			*str;
-	size_t			maxlen;
-
-	if (!s1)
-		return (NULL);
-	maxlen = ft_strnlen(s1, n);
-	if (!(str = (char*)malloc(sizeof(*str) * (maxlen + 1))))
-		return (NULL);
-	str = ft_memcpy(str, s1, maxlen);
-	*(str + maxlen) = '\0';
-	return (str);
-}
-
-char				*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char			*str;
-
-	if (!s)
-		return (NULL);
-	if (start > ft_strlen(s))
-		len = 0;
-	if (!(str = ft_strndup(s + start, len)))
-		return (NULL);
-	return (str);
+	strlen = ft_strlen(s);
+	if (len + start <= strlen)
+		len_alloc = len;
+	else
+	{
+		len_alloc = (strlen >= start ? strlen - start : 0);
+	}
+	if ((ret = malloc((len_alloc + 1) * sizeof(char))))
+	{
+		ft_memcpy(ret, s + start, len_alloc);
+		ret[len_alloc] = 0;
+	}
+	return (ret);
 }

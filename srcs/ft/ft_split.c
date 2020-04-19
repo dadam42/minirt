@@ -3,86 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/23 21:46:11 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/31 11:42:50 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/15 17:57:24 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/17 13:31:50 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t			ft_strnlen(char const *s, size_t maxlen)
+static char const	*next(char const *start, char c)
 {
-	char	*tmp;
-
-	if (!s)
-		return (0);
-	tmp = (char*)s;
-	while (maxlen-- && *tmp)
-		tmp++;
-	return (tmp - s);
+	while (*start && *start != c)
+		start++;
+	return (start);
 }
 
-static char				*ft_strndup(char const *s1, size_t n)
+static size_t		wc(char const *str, char c)
 {
-	char			*str;
-	size_t			maxlen;
+	size_t		ret;
+	char const	*fwd;
 
-	if (!s1)
-		return (NULL);
-	maxlen = ft_strnlen(s1, n);
-	if (!(str = (char*)malloc(sizeof(*str) * (maxlen + 1))))
-		return (NULL);
-	str = ft_memcpy(str, s1, maxlen);
-	*(str + maxlen) = '\0';
-	return (str);
-}
-
-static size_t			count_words(char const *s, char c)
-{
-	size_t		nb_words;
-
-	nb_words = 0;
-	if (*s != c)
-		nb_words++;
-	while (*(s++))
-		if (*s != c && *(s - 1) == c)
-			nb_words++;
-	return (nb_words);
-}
-
-static void				*malloc_failure(char ***current_word, char **first_word)
-{
-	while (**(current_word--) >= *first_word)
-		free(**current_word);
-	free(*current_word);
-	return (NULL);
-}
-
-char					**ft_split(char const *s, char c)
-{
-	char	**current_word;
-	char	**first_word;
-	char	*begin_word;
-
-	if (!s || !(current_word = (char**)malloc(sizeof(*current_word)
-		* (count_words(s, c) + 1))))
-		return (NULL);
-	first_word = current_word;
-	while (*s && *s == c)
-		s++;
-	while (*s)
+	ret = 0;
+	fwd = str;
+	while (*str)
 	{
-		begin_word = (char*)s;
-		while (*s && *s != c)
-			s++;
-		if (!(*current_word = ft_strndup(begin_word, s - begin_word)))
-			return (malloc_failure(&current_word, first_word));
-		while (*s && *s == c)
-			s++;
-		current_word++;
+		fwd = next(str, c);
+		if (fwd == str)
+			fwd++;
+		else
+			ret++;
+		str = fwd;
 	}
-	*current_word = NULL;
-	return (first_word);
+	return (ret);
+}
+
+int					check_build_chunk(char const *str, char const *fwd_str,
+		char ***ret, char **fwd_ret)
+{
+	char	*chunk;
+	size_t	wc;
+
+	if ((chunk = malloc((fwd_str - str + 1) * sizeof(char))))
+	{
+		ft_memcpy(chunk, str, fwd_str - str);
+		chunk[fwd_str - str] = 0;
+		*fwd_ret = chunk;
+		return (1);
+	}
+	else
+	{
+		wc = fwd_ret - *ret + 1;
+		while (wc-- > 0)
+			free(*--fwd_ret);
+		free(*ret);
+		*ret = NULL;
+		return (0);
+	}
+}
+
+char				**ft_split(char const *str, char c)
+{
+	size_t		wcount;
+	char		**ret;
+	char		**fwd_ret;
+	char const	*fwd_str;
+
+	wcount = wc(str, c);
+	if ((ret = malloc((wcount + 1) * sizeof(char*))))
+	{
+		ret[wcount] = NULL;
+		fwd_ret = ret;
+		while (*str)
+		{
+			fwd_str = next(str, c);
+			if (fwd_str == str)
+				fwd_str++;
+			else if (!check_build_chunk(str, fwd_str, &ret, fwd_ret++))
+				break ;
+			str = fwd_str;
+		}
+	}
+	return (ret);
 }

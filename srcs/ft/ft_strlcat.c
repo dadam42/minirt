@@ -3,42 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/17 11:34:45 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/29 23:12:46 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/08 14:47:52 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/12 11:23:10 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	ft_strnlen(char const *s, size_t maxlen)
+size_t	ft_strlcat(char *dst, const char *src, size_t bufsize)
 {
-	size_t		size;
+	char		*fwd_dst;
+	const char	*fwd_src;
+	int			size_dst;
+	int			overloaded;
 
-	size = 0;
-	if (!s)
-		return (0);
-	while (*(s + size) && maxlen--)
-		size++;
-	return (size);
-}
-
-size_t			ft_strlcat(char *dst, char const *src, size_t dstsize)
-{
-	size_t		len_dst;
-	size_t		len_src;
-
-	len_dst = ft_strnlen(dst, dstsize);
-	len_src = ft_strlen(src);
-	if (len_dst >= dstsize)
-		return (len_src + dstsize);
-	if (len_src < dstsize - len_dst)
-		ft_memcpy(dst + len_dst, src, len_src + 1);
-	else
+	overloaded = 0;
+	fwd_dst = dst;
+	while (*fwd_dst++ && bufsize > 0)
+		bufsize--;
+	size_dst = (--fwd_dst - dst);
+	if (!bufsize)
+		overloaded = 1;
+	fwd_src = src;
+	while (bufsize > 1 && *fwd_src)
 	{
-		ft_memcpy(dst + len_dst, src, dstsize - 1);
-		*(dst + dstsize - 1) = '\0';
+		*fwd_dst = *fwd_src;
+		fwd_src++;
+		fwd_dst++;
+		bufsize--;
 	}
-	return (len_src + len_dst);
+	if (!overloaded)
+		*fwd_dst = 0;
+	while (*fwd_src)
+		fwd_src++;
+	return (size_dst + fwd_src - src);
 }

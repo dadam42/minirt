@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/20 10:42:15 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/26 14:10:11 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/16 00:37:58 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/16 00:38:02 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list		*ft_lstlast(t_list *lst)
+t_list	*ft_lstlast(t_list *lst)
 {
-	if (lst)
-		while (lst->next)
-			lst = lst->next;
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
 	return (lst);
 }

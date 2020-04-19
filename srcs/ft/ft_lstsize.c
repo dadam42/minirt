@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/20 10:02:03 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/29 21:43:12 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/16 00:37:48 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/16 00:37:53 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_lstsize(t_list *lst)
+int	ft_lstsize(t_list *lst)
 {
-	int		size;
+	int size;
 
 	size = 0;
 	while (lst)

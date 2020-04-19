@@ -3,48 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rotrojan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: damouyal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/12 20:11:47 by rotrojan          #+#    #+#             */
-/*   Updated: 2019/10/29 23:38:48 by rotrojan         ###   ########.fr       */
+/*   Created: 2019/10/10 20:35:57 by damouyal          #+#    #+#             */
+/*   Updated: 2019/10/15 23:27:19 by damouyal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-static unsigned char	is_set(char const c, char const *set)
+static char	const	*find_first_not_in_set(char const *start, char const *set)
 {
-	while (*set)
-	{
-		if (c == *set)
-			return (1);
-		++set;
-	}
-	return (0);
+	while (*start)
+		if (ft_ischarinset(*start, set))
+			start++;
+		else
+			break ;
+	return (start);
 }
 
-char					*ft_strtrim(char const *s1, char const *set)
+static char const	*find_last_not_in_set(char const *start, char const *set)
 {
-	size_t		start;
-	size_t		i;
+	char const *bwd_end;
 
-	if (!s1)
-		return (NULL);
-	if (!*s1)
-		return (ft_strdup(""));
-	if (!set || !*set)
-		return (ft_strdup(s1));
-	i = 0;
-	while (is_set(*(s1 + i), set))
-		i++;
-	start = i;
-	while (*(s1 + i))
-		i++;
-	while (is_set(*(s1 + i - 1), set))
+	bwd_end = start;
+	while (*bwd_end)
+		bwd_end++;
+	bwd_end--;
+	while (bwd_end > start)
 	{
-		i--;
-		if (!i)
-			return (ft_strdup(""));
+		if (ft_ischarinset(*bwd_end, set))
+			bwd_end--;
+		else
+			break ;
 	}
-	return (ft_substr(s1, start, i - start));
+	return (bwd_end);
+}
+
+char				*ft_strtrim(char const *s1, char const *set)
+{
+	char const	*start;
+	char const	*end;
+	char		*ret;
+	size_t		len;
+
+	start = find_first_not_in_set(s1, set);
+	end = find_last_not_in_set(start, set);
+	len = end - start + 2;
+	if ((ret = malloc(len * sizeof(char))))
+	{
+		ft_memcpy(ret, start, len - 1);
+		ret[len - 1] = 0;
+	}
+	return (ret);
 }
