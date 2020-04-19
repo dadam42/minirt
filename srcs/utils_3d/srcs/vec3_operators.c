@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vec3_operators.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/19 18:57:31 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/19 18:57:33 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils_3d.h"
 
-void t_vec3_add(t_vec3 a, t_vec3 b, t_vec3 r)
+void	t_vec3_add(t_vec3 a, t_vec3 b, t_vec3 r)
 {
 	short cur;
 
@@ -26,7 +38,7 @@ void	t_vec3_lcomb(double l, t_vec3 a, t_vec3 b, t_vec3 r)
 
 double	t_vec3_sprod(t_vec3 a, t_vec3 b)
 {
-	return (a[0]*b[0] + a[1]*b[1] + a[2]*b[2]);
+	return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
 }
 
 void	t_vec3_vprod(t_vec3 a, t_vec3 b, t_vec3 r)
@@ -37,7 +49,7 @@ void	t_vec3_vprod(t_vec3 a, t_vec3 b, t_vec3 r)
 	cur = 0;
 	while (cur < 3)
 	{
-		tmp[cur] = a[(cur + 1) % 3] 
+		tmp[cur] = a[(cur + 1) % 3]
 					* b[(cur + 2) % 3]
 					- a[(cur + 2) % 3]
 					* b[(cur + 1) % 3];

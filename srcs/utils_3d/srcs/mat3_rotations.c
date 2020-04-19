@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mat3_rotations.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/19 18:51:32 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/19 18:51:33 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils_3d.h"
 #include <math.h>
 #include "libft.h"
 
-static	void canonical_rotation_matrix(double angle, t_mat3 canonical)
+static void	canonical_rotation_matrix(double angle, t_mat3 canonical)
 {
 	canonical[0][0] = cos(angle);
 	canonical[0][1] = -sin(angle);
@@ -15,7 +27,7 @@ static	void canonical_rotation_matrix(double angle, t_mat3 canonical)
 	canonical[2][2] = 1;
 }
 
-void	rotation_matrix(t_vec3 axis, double angle, t_mat3 rot)
+void		rotation_matrix(t_vec3 axis, double angle, t_mat3 rot)
 {
 	static	t_mat3	canonical_base = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
 	t_mat3			canonical_rot;
@@ -29,7 +41,7 @@ void	rotation_matrix(t_vec3 axis, double angle, t_mat3 rot)
 	{
 		t_vec3_vprod(canonical_base[cur], base[2], base[1]);
 		if (t_vec3_sqnorm(base[1]) > 0)
-			break;
+			break ;
 		cur++;
 	}
 	t_vec3_vprod(base[1], base[2], base[0]);
