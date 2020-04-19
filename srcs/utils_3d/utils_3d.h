@@ -1,5 +1,6 @@
 #ifndef UTILS_3D_H
 # define UTILS_3D_H
+# define PREC 1e-15
 
 typedef double 		t_vec3[3];
 typedef double 		(*t_real_app)(double);
@@ -33,4 +34,5 @@ void				t_mat3_inv(t_mat3 a, t_mat3 r);
 void				t_mat3_transpose(t_mat3 a, t_mat3 r);
 void				t_mat3_apply_vec3(t_mat3 a, t_vec3 v, t_vec3 r);
 void				t_mat3_dapply_vec3(t_vec3 tv, t_mat3 a, t_vec3 r);
+void				rotation_matrix(t_vec3 axis, double angle, t_mat3 rot);
 #endif

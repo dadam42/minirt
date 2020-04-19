@@ -107,6 +107,7 @@ typedef	struct			s_screen
 	t_translation	dh;
 	t_translation	dw;
 }						t_screen;
+
 typedef struct s_boxed_pixel_collection
 						t_boxed_pixel_collection;
 typedef struct s_screen_box
@@ -346,6 +347,14 @@ struct			s_object_coord
 typedef			t_object
 				t_plane;
 
+typedef	bool  (*t_planar_get_first_intersection_test)
+				(t_object *object, t_intersection *inter, t_time time);
+
+void	planar_get_first_intersection(t_object *object
+							, t_intersection *inter
+							, t_planar_get_first_intersection_test test);
+bool	planar_get_first_intersection_test_ok(t_object *object
+									, t_intersection *inter, t_time time);
 void	plane_get_first_intersection(t_object *object
 									, t_intersection *inter);
 void	plane_get_coord(t_object *object, t_position position
@@ -371,6 +380,9 @@ void					sphere_get_coord
 							(t_object*, t_position, t_object_coord*);
 void					sphere_get_normal
 							(t_object*, t_object_coord *coord, t_vec3 dir);
+/*
+**	t_cylinder
+*/
 
 typedef struct			s_cylinder
 {
@@ -387,6 +399,27 @@ void					cylinder_get_coord
 							(t_object*, t_position, t_object_coord*);
 void					cylinder_get_normal
 							(t_object*, t_object_coord *coord, t_vec3 dir);
+/*
+** t_square
+*/
+
+typedef struct	s_square
+{
+	t_object	object;
+	t_float		size;
+}				t_square;
+
+void 					square_get_first_intersection(t_object *obj
+							, t_intersection *intersection);
+void					*square_get_albedo(t_object*
+							, t_object_coord *coord, t_albedo);
+void					square_get_coord
+							(t_object*, t_position, t_object_coord*);
+void					square_get_normal
+							(t_object*, t_object_coord *coord, t_vec3 dir);
+bool					square_get_first_intersection_test(t_object *obj
+										, t_intersection *inter
+										, t_time time);
 /*
 **	t_intersection : 	heart of ray tracing algorithm's datas.
 **						it gather and cache any data required for

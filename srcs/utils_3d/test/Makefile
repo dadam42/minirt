@@ -17,6 +17,9 @@ test_vprod : vec3_operators.o test.o vec3_vprod.o
 	gcc $^ -o $@
 	./$@
 
+test_rot : rotations.o mat3_rotations.o test.o
+	gcc  -g $^ -o $@ -lm -lft -L../../ft -lutils_3d -L..
+
 .PHONY: clean
 clean:
 	rm -f *.o

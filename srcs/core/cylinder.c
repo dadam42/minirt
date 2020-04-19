@@ -30,7 +30,7 @@ void	cylinder_get_first_intersection(t_object *object, t_intersection *inter)
 	disc = sqrt(disc);
 	locray.direction[2] = t_vec3_sprod(inter->ray->direction, object->base[2]);
 	locray.direction[0] = norm / (locray.direction[2] * locray.direction[2] - 1);
-	time = 1 / locray.direction[0] * (-locray.start[0] + disc);
+	time = locray.direction[0] * (-locray.start[0] + disc);
 	if (time > SQPREC && time < inter->time)
 	{
 		height = locray.start[2] + time * locray.direction[2];
@@ -41,7 +41,7 @@ void	cylinder_get_first_intersection(t_object *object, t_intersection *inter)
 			return;
 		}
 	}
-	time = 1 / locray.direction[0] * (-locray.start[0] - disc);
+	time = locray.direction[0] * (-locray.start[0] - disc);
 	if (time > SQPREC && time < inter->time)
 	{
 		height = locray.start[2] + time * locray.direction[2];

@@ -23,3 +23,11 @@ void	boxed_pixel_collection_get_film(
 		break;
 	}
 }
+
+void	boxed_pixe_collection_get_film_aa(
+						t_boxed_pixel_collection *collection
+						, t_minirt	*minirt
+						, t_position	*obs
+						, t_film *film)
+{
+}

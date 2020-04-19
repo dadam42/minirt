@@ -11,7 +11,8 @@ void	t_mat3_copy(t_mat3 dst, t_mat3 src)
 		cdx =  0;
 		while (cdx < 3)
 		{
-			dst[ldx][cdx] = src[ldx][cdx]; 
+			dst[ldx][cdx] = src[ldx][cdx];
+			cdx++ ;
 		}
 		ldx++;
 	}
