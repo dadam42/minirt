@@ -6,7 +6,7 @@ LIBS=libft libbmpfile libutils_3d libarray_collection librtparser libgnl#list of
 STDLIBS=libm#list of libs which must be include to compile
 #-- definitions for each libfoo from $(LIBS):
 ft_DIR=../ft#mandatory, directory containing both library and its Makefile.
-gnl_DIR=../rotrojan_gnl
+gnl_DIR=../gnl
 bmpfile_DIR=../bmpfile
 utils_3d_DIR=../utils_3d
 array_collection_DIR=../array_collection
@@ -20,7 +20,7 @@ SRCS_INCS=.#
 #---- dont change anything after this
 #--------------------------------------------------------------------------------------
 
-GEN_MAKEFILE_PATH=/home/david/42Projects/minirt/project/.d42Makefile
+GEN_MAKEFILE_PATH=../.d42Makefile
 include $(GEN_MAKEFILE_PATH)/genMakefile
 
 .PHONY: view

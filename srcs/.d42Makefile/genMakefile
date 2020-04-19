@@ -1,0 +1,52 @@
+CC=gcc
+RTARGET_TYPE=$(if $(TARGET_TYPE),$(TARGET_TYPE),exe)
+LIBS_FPATHS=$(foreach lib,$(LIBS:lib%=%),$($(lib)_DIR)/lib$(lib).a)
+LIBS_DIRS=$(foreach lib,$(LIBS:lib%=%),$($(lib)_DIR))
+LDLIBS=$(LIBS_DIRS:%=-L%) $(LIBS:lib%=-l%) $(STDLIBS:lib%=-l%)
+LIBS_INCS=$(foreach lib,$(LIBS:lib%=%),$(if $($(lib)_INC),$($(lib)_INC),$($(lib)_DIR)))
+IFLAGS=$(SRCS_INCS:%=-I%) $(LIBS_INCS:%=-I%)
+CFLAGS=-Wall -Wextra -Werror $(IFLAGS) $(DEBUG)
+export DEBUG
+empty=
+space=$(empty) $(empty)
+VPATH=$(subst $(space),:,$(SRCS_DIRS))
+vpath lib%.a $(subst $(space),:,$(LIBS_DIRS))
+define libfclean_rule
+.PHONY:$(1).fclean
+$(1).fclean:
+	$$(MAKE) -C $$($(1:lib%=%)_DIR) fclean 
+
+endef
+
+.PHONY:all
+all:$(TARGET)
+
+bonus:$(TARGET)
+
+ifeq ($(RTARGET_TYPE),exe)
+$(TARGET):$(LIBS:%=%.a) $(SRCS:%.c=%.o)
+	gcc $(CFLAGS) $(SRCS:%.c=%.o)  -o $@ $(LDLIBS)
+else
+$(TARGET): $(LIBS:%=%.a) $(SRCS:%.c=%.o)
+	$(foreach liba, $(notdir $(filter %.a, $?)), ar -x $($(liba:lib%.a=%)_DIR)/$(liba);)
+	ar -rc $@ *.o
+	ranlib $@
+endif
+
+ifneq ($(LIBS),)
+lib%.a:
+	$(MAKE) -C $($*_DIR)
+endif
+
+$(foreach lib,$(LIBS),$(eval $(call libfclean_rule, $(lib))))
+
+.PHONY:clean
+clean:
+	rm -f $(wildcard *.o)
+
+.PHONY: fclean
+fclean:$(LIBS:%=%.fclean) clean
+	rm -f $(TARGET)
+
+.PHONY:re
+re:fclean $(TARGET)
