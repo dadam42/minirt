@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filert_parse_triangle.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/19 18:26:53 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/19 18:27:01 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filert_parser.h"
 
 t_filert_parser_com	filert_parse_triangle(char **str
-												, t_filert_parsed_obj *obj)
+											, t_filert_parsed_obj *obj)
 {
 	short	cur;
 

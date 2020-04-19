@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filert_parse_color.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/19 18:12:56 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/19 18:12:57 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filert_parser.h"
 
 t_filert_parser_com	filert_parse_color(char **str
 												, t_filert_color *parsed)
 {
-	int 				cur_parsed;
+	int					cur_parsed;
 	short				cur;
 	t_filert_parser_com ret;
 
@@ -25,7 +37,7 @@ t_filert_parser_com	filert_parse_color(char **str
 			cur++;
 			continue;
 		}
-		break;
+		break ;
 	}
 	return (filert_internal);
 }

@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filert_parse_int.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/19 18:18:19 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/19 18:18:20 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filert_parser.h"
 
 t_filert_parser_com	filert_parse_int(char **str
-												, int	*parsed)
+									, int *parsed)
 {
 	short	isneg;
 
@@ -21,7 +33,7 @@ t_filert_parser_com	filert_parse_int(char **str
 		*parsed = 10 * *parsed - **str + '0';
 		(*str)++;
 		if (!(**str >= '0' && **str <= '9'))
-			break;
+			break ;
 	}
 	if (!isneg)
 		*parsed *= -1;

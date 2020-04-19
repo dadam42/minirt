@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_filert_error_init.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/19 18:27:56 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/19 18:27:58 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filert_parser.h"
 
 void	t_filert_error_init(t_filert_error *error)
 {
 	static char *(msg[]) = {
-		"Parse error" 
+		"Parse error"
 		, "Unknown type"
 		, "int expected"
 		, "float expected"
