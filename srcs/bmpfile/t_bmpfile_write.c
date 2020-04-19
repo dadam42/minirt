@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_bmpfile_write.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/19 17:40:08 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/19 17:41:53 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "bmpfile_utils.h"
 #include <unistd.h>
 #define BPP 3
 
-t_bmpfile_com	t_bmpfile_write_with_headers(t_bmpfile *bmpfile
+t_bmpfile_com			t_bmpfile_write_with_headers(t_bmpfile *bmpfile
 											, unsigned char *content
 											, int len)
 {
@@ -29,7 +41,7 @@ static t_bmpfile_com	write_line(t_bmpfile *bmpfile
 	return (bmpfile_ok);
 }
 
-t_bmpfile_com	t_bmpfile_write_no_header(t_bmpfile *bmpfile
+t_bmpfile_com			t_bmpfile_write_no_header(t_bmpfile *bmpfile
 										, unsigned char *content
 										, int len)
 {
@@ -49,11 +61,11 @@ t_bmpfile_com	t_bmpfile_write_no_header(t_bmpfile *bmpfile
 		}
 		while (1)
 		{
-			ret = write_line(bmpfile, &content, &len); 
+			ret = write_line(bmpfile, &content, &len);
 			if (ret != bmpfile_ok)
 				return (ret);
 			if (len < bmpfile->info.width - bmpfile->wcur)
-				break;
+				break ;
 		}
 	}
 }
