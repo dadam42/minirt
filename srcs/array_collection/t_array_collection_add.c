@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_array_collection_add.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/19 17:31:13 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/19 17:31:16 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "array_collection.h"
 #include "libft.h"
 #include <stdlib.h>
 
-static	t_array_collection_com	enlarge_array_collection(t_array_collection *collection)
+static	t_array_collection_com	enlarge_array_collection
+									(t_array_collection *collection)
 {
 	void	**ncontent;
 	int		nsize;
@@ -29,7 +42,8 @@ static	t_array_collection_com	enlarge_array_collection(t_array_collection *colle
 	return (array_collection_ok);
 }
 
-t_array_collection_com 	t_array_collection_add(t_array_collection *collection
+t_array_collection_com			t_array_collection_add(
+												t_array_collection *collection
 												, void	*elt)
 {
 	if (collection->count == collection->size)
