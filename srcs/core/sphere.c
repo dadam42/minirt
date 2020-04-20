@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sphere.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 03:02:27 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 03:02:30 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include "libft.h"
 #include <math.h>
@@ -37,11 +49,13 @@ void	sphere_get_coord(t_object *obj
 
 	t_vec3_init_by_plot3(obj->origin, pos, lpos);
 	t_mat3_dapply_vec3(lpos, obj->base, coords->cartesian);
-	//coords->local[0] = acos(coords->cartesian[2] / ((t_sphere*)obj)->radius);
-	//coords->local[1] = atan2(coords->cartesian[1], coords->cartesian[0]);
+/*
+** coords->local[0] = acos(coords->cartesian[2] / ((t_sphere*)obj)->radius);
+** coords->local[1] = atan2(coords->cartesian[1], coords->cartesian[0]);
+*/
 }
 
-void	sphere_get_normal(t_object* obj
+void	sphere_get_normal(t_object *obj
 						, t_object_coord *coords
 						, t_vec3 dir)
 {

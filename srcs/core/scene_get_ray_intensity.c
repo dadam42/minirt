@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scene_get_ray_intensity.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 02:53:11 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 02:58:36 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
-void	scene_get_ray_intensity(
-			t_scene		*scene	
-			, t_ray		*ray
-			, t_intensity	intensity)
+void	scene_get_ray_intensity(t_scene *scene
+								, t_ray *ray
+								, t_intensity intensity)
 {
 	t_intersection	inter;
 

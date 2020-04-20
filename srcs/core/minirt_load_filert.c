@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt_load_filert.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 02:22:06 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 03:05:30 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include "minirt_load_filert_utils.h"
 #include <fcntl.h>
@@ -6,14 +18,14 @@
 #include "get_next_line.h"
 #include "libft.h"
 
-static t_minirt_com minirt_add_rtobject(t_minirt *minirt
+static t_minirt_com	minirt_add_rtobject(t_minirt *minirt
 		, t_filert_parser_com type
 		, t_filert_parsed_obj *parsed)
 {
 	static t_minirt_rtobject_adder	adder[] = {minirt_add_rtsphere
 			, minirt_add_rtcylinder, minirt_add_rtsquare
 			, minirt_add_rttriangle, minirt_add_rtplane};
-	t_object	*obj;
+	t_object						*obj;
 
 	obj = adder[type](minirt, parsed);
 	if (!obj)
@@ -25,11 +37,11 @@ static t_minirt_com minirt_add_rtobject(t_minirt *minirt
 
 static t_minirt_com	minirt_add_dispatch(t_minirt *minirt
 		, t_filert_parser_com type
-		, t_filert_parsed_obj	*parsed)
+		, t_filert_parsed_obj *parsed)
 {
 	if (type < filert_prop_end)
 		return (minirt_add_prop_from_filert(minirt
-					, type - filert_prop_begin, parsed));
+				, type - filert_prop_begin, parsed));
 	if (type < filert_camera_end)
 		return (minirt_add_rtcamera(minirt, parsed));
 	if (type < filert_light_end)
@@ -38,12 +50,12 @@ static t_minirt_com	minirt_add_dispatch(t_minirt *minirt
 					, type - filert_object_begin - 1, parsed));
 }
 
-static void parse_error_special_treatment(t_minirt *minirt
+static void			parse_error_special_treatment(t_minirt *minirt
 		, t_filert_load_loop_state *state
 		, int fd)
 {
-	char *itoaed;
-	t_filert_error filert_error;
+	char			*itoaed;
+	t_filert_error	filert_error;
 
 	t_filert_error_init(&filert_error);
 	minirt_write_error(minirt, minirt_parse_error);
@@ -63,7 +75,7 @@ static void parse_error_special_treatment(t_minirt *minirt
 	minirt_exit(minirt, minirt_error);
 }
 
-static void	filert_load_loop(int fd, t_minirt* minirt)
+static void			filert_load_loop(int fd, t_minirt *minirt)
 {
 	t_filert_load_loop_state state;
 
@@ -75,11 +87,11 @@ static void	filert_load_loop(int fd, t_minirt* minirt)
 		{
 			if (state.gnl != gnl_eof)
 				minirt_sys_fatal_error(minirt);
-			break;
+			break ;
 		}
 		state.cur = state.line;
 		filert_parser_ignore(&state.cur, FILERT_PARSER_IGNORE);
-		if (*(state.cur) && *(state.cur) != ':')//
+		if (*(state.cur) && *(state.cur) != ':')
 		{
 			state.parse_ret = filert_parse(&state.cur, &state.parsed);
 			if (state.parse_ret >= filert_error)

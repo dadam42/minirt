@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   py2_solver.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 02:44:21 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 02:44:22 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include "utils_3d.h"
 #include <stdbool.h>
@@ -15,7 +27,7 @@ void	py2_solver_init(t_py2_solver *solver, t_float coefs[3])
 	{
 		solver->nsol = 1;
 		disc = sqrt(disc);
-		solver->sol = (- coefs[1] + disc)/ (2 * coefs[0]);
+		solver->sol = (-coefs[1] + disc) / (2 * coefs[0]);
 		solver->inc = -disc / (2 * coefs[0]);
 		if (disc > SQPREC)
 		{
@@ -63,7 +75,6 @@ bool	get_minimum_positive_upy2_solution_if_exists(double ucoefs[2]
 	double cur_sol;
 
 	discr = ucoefs[0] * ucoefs[0] - 4 * ucoefs[1];
-
 	if (discr < 0)
 		return (false);
 	discr = sqrt(discr);
@@ -71,10 +82,10 @@ bool	get_minimum_positive_upy2_solution_if_exists(double ucoefs[2]
 	while (1)
 	{
 		if (cur_sol > SQPREC && cur_sol < max)
-			break;
+			break ;
 		cur_sol += discr;
 		if (cur_sol > SQPREC && cur_sol < max)
-			break;
+			break ;
 		return (false);
 	}
 	*sol = cur_sol;

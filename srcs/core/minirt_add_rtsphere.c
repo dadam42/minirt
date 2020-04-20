@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt_add_rtsphere.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 01:59:07 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 01:59:08 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include <stdlib.h>
 #include "libft.h"
 
-void			sphere_init_by_filert(t_sphere *sphere
+void		sphere_init_by_filert(t_sphere *sphere
 										, t_filert_sphere *rtsphere)
 {
 	sphere->radius = rtsphere->diameter / 2;
@@ -30,15 +42,3 @@ t_object	*minirt_add_rtsphere(t_minirt *minirt
 	}
 	return (&sphere->object);
 }
-
-/*
-t_minirt_com	t_minirt_add_rtsphere(t_minirt *minirt
-								, t_filert_parsed_obj *parsed)
-{
-	t_sphere *sphere;
-
-	sphere = malloc(sizeof(t_sphere));
-	if (!sphere)
-		t_minirt_fatal_error(minirt, minirt_mem_error);
-	t_color_from_filert(sphere->obj.);
-}*/

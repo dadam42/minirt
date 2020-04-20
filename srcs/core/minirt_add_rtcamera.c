@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt_add_rtcamera.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 01:56:06 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 01:56:08 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include <math.h>
 #include <stdlib.h>
@@ -5,22 +17,21 @@
 static void		select_camera_orientation(t_minirt *minirt, t_camera *camera)
 {
 	unsigned char	cur;
-	t_float	sqnorm;
+	t_float			sqnorm;
 
 	cur = 2;
-	while (cur !=0)
+	while (cur != 0)
 	{
 		t_vec3_vprod(camera->base[view], (*minirt->canonical)[cur]
 			, camera->base[right]);
 		sqnorm = t_vec3_sqnorm(camera->base[right]);
 		if (sqnorm > PREC)
-			break;
+			break ;
 		cur--;
 	}
 	t_vec3_smult(1 / sqrt(sqnorm), camera->base[right], camera->base[right]);
 	t_vec3_vprod(camera->base[right], camera->base[view], camera->base[up]);
 }
-
 
 t_minirt_com	minirt_add_rtcamera(t_minirt *minirt
 									, t_filert_parsed_obj *parsed)

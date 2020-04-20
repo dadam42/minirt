@@ -1,18 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   planar.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 02:39:01 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 02:39:02 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 void	planar_get_first_intersection(t_object *object
 									, t_intersection *inter
 									, t_planar_get_first_intersection_test test)
 {
-	t_float nproj;
-	t_float	time;
-	t_position os;
+	t_float		nproj;
+	t_float		time;
+	t_position	os;
 
 	nproj = t_vec3_sprod(inter->ray->direction, object->base[2]);
 	if (nproj > PREC || nproj < -PREC)
 	{
 		t_vec3_init_by_plot3(object->origin, inter->ray->start, os);
-		time = - t_vec3_sprod(os, object->base[2]) / nproj;
+		time = -t_vec3_sprod(os, object->base[2]) / nproj;
 		if (time > PREC && time < inter->time && test(object, inter, time))
 		{
 			inter->time = time;

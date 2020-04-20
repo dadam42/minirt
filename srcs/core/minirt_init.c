@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt_init.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 02:05:51 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 02:13:09 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include "libft.h"
 
-static void minirt_init_warn_msg(t_minirt *minirt)
+static void	minirt_init_warn_msg(t_minirt *minirt)
 {
-	static char *(warn_msg[]) = 
-	{
-		"Direction was too small, changed to negx direction relatively to canonical base.\n"
+	static char *(warn_msg[]) = {
+		"Direction was too small, changed to negx direction"
+		"relatively to canonical base.\n"
 		, "Height was not positive, changed to default height : 800.\n"
 		, "Width was not positive, changed to default width : 800.\n"
 		, "Object can't be displayed.\n"
@@ -16,8 +28,7 @@ static void minirt_init_warn_msg(t_minirt *minirt)
 
 static void	minirt_init_err_msg(t_minirt *minirt)
 {
-	static char *(err_msg[]) = 
-	{
+	static char *(err_msg[]) = {
 		"Minirt error.\n"
 		, "Minirt mem error.\n"
 		, "Minirt parse error.\n"

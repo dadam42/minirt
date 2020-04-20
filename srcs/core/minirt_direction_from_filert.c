@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt_direction_from_filert.c                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 02:01:08 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 02:01:42 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include <math.h>
 #include "libft.h"
 
-void					direction_from_filert(t_minirt *minirt, 
-							t_direction	dir,
-							t_filert_direction	rtdir)
+void					direction_from_filert(t_minirt *minirt,
+							t_direction dir,
+							t_filert_direction rtdir)
 {
 	double sqnorm;
 

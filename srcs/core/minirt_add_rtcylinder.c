@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt_add_rtcylinder.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 01:57:11 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 01:57:12 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include <stdlib.h>
 
@@ -31,7 +43,7 @@ t_object	*minirt_add_rtcylinder(t_minirt *minirt
 	if (cylinder->radius < PREC || cylinder->height < PREC)
 	{
 		minirt_write_warning(minirt, size_is_nul);
-		cylinder->object.get_first_intersection = 
+		cylinder->object.get_first_intersection =
 									object_noop_get_first_intersection;
 	}
 	return ((t_object*)cylinder);

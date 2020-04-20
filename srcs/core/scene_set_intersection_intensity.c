@@ -1,10 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scene_set_intersection_intensity.c                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 03:00:28 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 03:00:28 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include "libft.h"
 #include <stdbool.h>
 #include <math.h>
 
-static bool	get_coef_if_matter(t_scene *scene, t_light *light
-							, t_intersection *inter, t_float *coef)
+static bool	get_coef_if_matter(t_scene *scene
+							, t_light *light
+							, t_intersection *inter
+							, t_float *coef)
 {
 	t_intersection	shinter;
 	t_ray			shray;
@@ -31,8 +45,7 @@ static bool	get_coef_if_matter(t_scene *scene, t_light *light
 	return (true);
 }
 
-
-void	scene_set_intersection_intensity(t_scene *scene
+void		scene_set_intersection_intensity(t_scene *scene
 									, t_intersection *inter)
 {
 	t_scene_light_iterator	light;

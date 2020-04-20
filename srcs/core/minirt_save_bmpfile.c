@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt_save_bmpfile.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 02:27:37 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 02:27:39 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include "bmpfile.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <math.h>
 
-void	film_legacy_to_rgb(t_film *film
-		, int size)
+void				film_legacy_to_rgb(t_film *film
+										, int size)
 {
 	int			cur;
 	t_comp		comp;
@@ -26,11 +38,11 @@ void	film_legacy_to_rgb(t_film *film
 }
 
 static t_minirt_com	bmp_writing_loop(t_minirt *minirt
-		, t_image *i
-		, t_bmpfile *file)
+									, t_image *i
+									, t_bmpfile *file)
 {
-	t_screen		screen;
-	t_screen_box	box;
+	t_screen					screen;
+	t_screen_box				box;
 	t_boxed_pixel_collection	pixel;
 
 	box.ulc[height] = minirt->resolution.height - 1;
@@ -52,7 +64,7 @@ static t_minirt_com	bmp_writing_loop(t_minirt *minirt
 	return (minirt_ok);
 }
 
-static void minirt_handle_save_bmperror(t_minirt* minirt, t_minirt_com com)
+static void minirt_handle_save_bmperror(t_minirt *minirt, t_minirt_com com)
 {
 	if (com != minirt_ok)
 	{
@@ -64,8 +76,8 @@ static void minirt_handle_save_bmperror(t_minirt* minirt, t_minirt_com com)
 void	minirt_save_bmpfile(t_minirt *minirt
 		, char *filename)
 {
-	t_image 			image;
-	t_bmpfile_info 		bmpfile_info;
+	t_image				image;
+	t_bmpfile_info		bmpfile_info;
 	t_bmpfile			bmpfile;
 	t_minirt_com		com;
 

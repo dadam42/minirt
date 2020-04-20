@@ -22,7 +22,6 @@ void	cylinder_get_first_intersection(t_object *object, t_intersection *inter)
 	t_vec3_vprod(base[1], base[2], base[0]);
 	t_vec3_init_by_plot3(object->origin, inter->ray->start, locray.start);
 	t_mat3_apply_vec3(base, locray.start, locray.start);
-	//t_mat3_dapply_vec3(locray.start, base, locray.start);
 	sqrad = ((t_cylinder*)object)->radius * ((t_cylinder*)object)->radius;
 	disc = sqrad - locray.start[1] * locray.start[1];
 	if (disc <= 0)

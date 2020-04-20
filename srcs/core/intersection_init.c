@@ -1,25 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   intersection_init.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: damouyal <dadamouyal42@gmail.com>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/20 01:53:32 by damouyal          #+#    #+#             */
+/*   Updated: 2020/04/20 01:53:34 by damouyal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include "libft.h"
 
-void	intersection_init(t_intersection *inter, t_ray *ray, t_time time, t_intensity intensity)
+void	intersection_init(t_intersection *inter
+							, t_ray *ray, t_time time
+							, t_intensity intensity)
 {
 	inter->object = 0;
 	inter->ray = ray;
 	inter->time = time;
 	inter->intensity = intensity;
 }
-/*
-void	intersection_init(t_intersection *inter
-						, t_scene *scene, t_ray *ray, t_time time)
-{
-	t_scene_object_iterator	object_it;
-	
-	inter->object = 0;
-	inter->ray = ray;
-	inter->time = time;
-	ft_memcpy(inter->light_influence, scene->ambiant_light, sizeof(t_color));
-	scene_get_object_iterator(scene, &object_it);
-	while (object_it.next(&object_it))
-		object_preset_intersection(object_it.deref(&object_it), inter);
-}
-*/
